@@ -1,0 +1,823 @@
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, Linkedin, Mail, Code, Palette, Smartphone, Globe, ArrowRight, Menu, X } from 'lucide-react';
+import { Database, Cloud, Monitor, TestTube, Zap, Film, Server, GitBranch, BarChart3 } from 'lucide-react';
+import { Github, ExternalLink, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+
+
+const ImageCarousel = ({ images, alt, color }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!isAutoPlaying || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [images.length, isAutoPlaying]);
+
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? images.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToImage = (index) => {
+    setCurrentIndex(index);
+  };
+
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying(!isAutoPlaying);
+  };
+
+  if (images.length === 1) {
+    return (
+      <div className="relative w-full h-64 overflow-hidden">
+        <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-20`}></div>
+        <img
+          src={images[0]}
+          alt={alt}
+          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+          onLoad={() => setImageLoaded(true)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full h-64 overflow-hidden group">
+      {/* Background gradient */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-20`}></div>
+
+      {/* Main image */}
+      <div className="relative w-full h-full">
+        <img
+          src={images[currentIndex]}
+          alt={`${alt} - Image ${currentIndex + 1}`}
+          className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
+          onLoad={() => setImageLoaded(true)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/15"></div>
+      </div>
+
+      {/* Navigation arrows */}
+      <button
+        onClick={prevImage}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/30 hover:scale-110 shadow-lg"
+        aria-label="Previous image"
+      >
+        <ChevronLeft size={20} />
+      </button>
+
+      <button
+        onClick={nextImage}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/30 hover:scale-110 shadow-lg"
+        aria-label="Next image"
+      >
+        <ChevronRight size={20} />
+      </button>
+
+      {/* Auto-play toggle */}
+      <button
+        onClick={toggleAutoPlay}
+        className="absolute top-4 left-4 bg-white/20 backdrop-blur-md text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/30 hover:scale-110 shadow-lg"
+        aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+      >
+        {isAutoPlaying ? <Pause size={16} /> : <Play size={16} />}
+      </button>
+
+      {/* Image indicators */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+        {images.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToImage(index)}
+            className={`relative w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex
+                ? 'bg-white scale-125 shadow-lg'
+                : 'bg-white/50 hover:bg-white/75 hover:scale-110'
+              }`}
+            aria-label={`Go to image ${index + 1}`}
+          >
+            {index === currentIndex && (
+              <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* Image counter */}
+      <div className="absolute top-4 right-4 bg-black/30 backdrop-blur-md text-white text-sm px-3 py-1 rounded-full font-medium">
+        {currentIndex + 1} / {images.length}
+      </div>
+
+      {/* Progress bar */}
+      {isAutoPlaying && (
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20">
+          <div
+            className="h-full bg-gradient-to-r from-white to-white/80 transition-all duration-75 ease-linear"
+            style={{
+              width: `${((currentIndex + 1) / images.length) * 100}%`
+            }}
+          ></div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const Portfolio = () => {
+  const [activeSection, setActiveSection] = useState('home');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [hoveredProject, setHoveredProject] = useState(null);
+
+
+useEffect(() => {
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 50);
+    
+    // Add scroll-based section detection
+    const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+    const scrollPosition = window.scrollY + 100; // Offset for better detection
+    
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const { offsetTop, offsetHeight } = element;
+        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          setActiveSection(section);
+          break;
+        }
+      }
+    }
+  };
+  
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+
+  const projects = [
+    {
+      id: 1,
+      title: "Movie Watching Community",
+      description: "",
+      images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"],
+      tech: ["Python", "Flask", "Spring Boot", "React.js", "WebSocket", "Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
+        "FFmpeg", "MinIO", "Fluent Bit", "Prometheus", "Grafana", "Elasticsearch", "GitHub Actions"],
+      github: "https://github.com/ipyton/vydeos",
+      demo: "https://vydeo.xyz",
+      category: "web"
+    },
+    {
+      id: 2,
+      title: "Dunder Debunk(password:$mallAmber19)",
+      description: "React Native mobile app with real-time synchronization and offline support",
+      images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
+      tech: ["React Native", "Firebase", "Redux", "AsyncStorage"],
+      github: "#",
+      demo: "https://dunderdebunk.pages.dev/",
+      category: "web"
+    },
+    {
+      id: 3,
+      title: "AI Chat Interface",
+      description: "Modern chat interface with AI integration and real-time messaging",
+      images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
+      tech: ["React", "Node.js", "OpenAI API", "Socket.io"],
+      github: "#",
+      demo: "#",
+      category: "ai"
+    },
+    {
+      id: 4,
+      title: "Portfolio Website",
+      description: "Responsive portfolio website with modern animations and dark mode",
+      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+      tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+      github: "#",
+      demo: "#",
+      category: "web"
+    },
+    {
+      id: 5,
+      title: "Portfolio Website",
+      description: "Responsive portfolio website with modern animations and dark mode",
+      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+      tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+      github: "#",
+      demo: "#",
+      category: "web"
+    }
+
+  ];
+
+  const skills = [
+    // Programming Languages
+    { name: "Java", category: "programming" },
+    { name: "Python", category: "programming" },
+    { name: "JavaScript", category: "programming" },
+    { name: "Go", category: "programming" },
+
+    // Backend
+    { name: "Spring Boot", category: "backend" },
+    { name: "Spring Cloud", category: "backend" },
+    { name: "Node.js", category: "backend" },
+    { name: "Nginx", category: "backend" },
+    { name: "Netty", category: "backend" },
+    { name: "RESTful APIs", category: "backend" },
+    { name: "Microservices", category: "backend" },
+
+    // Frontend
+    { name: "React.js", category: "frontend" },
+    { name: "Vue.js", category: "frontend" },
+    { name: "TypeScript", category: "frontend" },
+    { name: "HTML5", category: "frontend" },
+    { name: "CSS3", category: "frontend" },
+    { name: "Responsive Design", category: "frontend" },
+
+    // Databases
+    { name: "MySQL", category: "database" },
+    { name: "Oracle", category: "database" },
+    { name: "PostgreSQL", category: "database" },
+    { name: "Redis", category: "database" },
+    { name: "MongoDB", category: "database" },
+    { name: "Cassandra", category: "database" },
+
+    // Cloud & DevOps
+    { name: "AWS", category: "devops" },
+    { name: "GCP", category: "devops" },
+    { name: "Docker", category: "devops" },
+    { name: "Kubernetes", category: "devops" },
+    { name: "Jenkins", category: "devops" },
+    { name: "GitHub Actions", category: "devops" },
+    { name: "Maven", category: "devops" },
+    { name: "Git", category: "devops" },
+
+    // Big Data
+    { name: "Apache Spark", category: "bigdata" },
+    { name: "Apache Flink", category: "bigdata" },
+    { name: "Kafka", category: "bigdata" },
+    { name: "ETL Pipelines", category: "bigdata" },
+
+    // Monitoring
+    { name: "Prometheus", category: "monitoring" },
+    { name: "Grafana", category: "monitoring" },
+    { name: "Kibana", category: "monitoring" },
+
+    // Testing
+    { name: "TDD", category: "testing" },
+    { name: "JMeter", category: "testing" },
+    { name: "Locust", category: "testing" },
+    { name: "Pytest", category: "testing" },
+
+    // Performance
+    { name: "JVM Fine-Tuning", category: "performance" },
+    { name: "Database Optimization", category: "performance" },
+    { name: "Distributed Systems", category: "performance" },
+    { name: "Linux I/O", category: "performance" },
+    { name: "TCP Stack Finetuning", category: "performance" },
+
+    // Media Processing
+    { name: "FFmpeg", category: "media" },
+    { name: "H.264", category: "media" },
+    { name: "RTMP", category: "media" },
+    { name: "HLS", category: "media" },
+    { name: "Video Transcoding", category: "media" },
+
+    // Systems
+    { name: "Unix/Linux Administration", category: "systems" },
+    { name: "Serverless Architecture", category: "systems" },
+    { name: "CI/CD", category: "systems" }
+  ]
+
+
+  const navItems = [
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' }
+  ];
+  const categories = [
+    { id: 'all', name: 'All Skills', icon: Code, color: 'from-purple-500 to-pink-500' },
+    { id: 'programming', name: 'Programming', icon: Code, color: 'from-blue-500 to-cyan-500' },
+    { id: 'backend', name: 'Backend', icon: Server, color: 'from-green-500 to-emerald-500' },
+    { id: 'frontend', name: 'Frontend', icon: Monitor, color: 'from-orange-500 to-red-500' },
+    { id: 'database', name: 'Database', icon: Database, color: 'from-indigo-500 to-purple-500' },
+    { id: 'devops', name: 'DevOps', icon: Cloud, color: 'from-teal-500 to-blue-500' },
+    { id: 'bigdata', name: 'Big Data', icon: BarChart3, color: 'from-yellow-500 to-orange-500' },
+    { id: 'monitoring', name: 'Monitoring', icon: Monitor, color: 'from-pink-500 to-rose-500' },
+    { id: 'testing', name: 'Testing', icon: TestTube, color: 'from-cyan-500 to-blue-500' },
+    { id: 'performance', name: 'Performance', icon: Zap, color: 'from-amber-500 to-yellow-500' },
+    { id: 'media', name: 'Media', icon: Film, color: 'from-violet-500 to-purple-500' },
+    { id: 'systems', name: 'Systems', icon: GitBranch, color: 'from-emerald-500 to-teal-500' }
+  ];
+
+  const filteredSkills = activeCategory === 'all'
+    ? skills
+    : skills.filter(skill => skill.category === activeCategory);
+
+  const groupedSkills = categories.reduce((acc, category) => {
+    if (category.id !== 'all') {
+      acc[category.id] = skills.filter(skill => skill.category === category.id);
+    }
+    return acc;
+  }, {});
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setActiveSection(sectionId);
+      setIsMenuOpen(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
+          : 'bg-gradient-to-b from-black/20 to-transparent backdrop-blur-sm'
+        }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div className={`text-2xl font-bold transition-all duration-300 ${isScrolled
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
+                : 'text-white drop-shadow-lg'
+              }`}>
+              Noah's Portfolio
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex space-x-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href.slice(1))}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${activeSection === item.href.slice(1)
+                      ? isScrolled
+                        ? 'text-blue-600 bg-blue-50 shadow-sm'
+                        : 'text-white bg-white/20 backdrop-blur-sm shadow-lg'
+                      : isScrolled
+                        ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
+                        : 'text-white/90 hover:text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
+                    }`}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              className={`md:hidden p-2 rounded-lg transition-all duration-300 ${isScrolled
+                  ? 'text-gray-700 hover:bg-gray-100'
+                  : 'text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
+                }`}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <div className="md:hidden">
+              <div className={`${isScrolled
+                  ? 'bg-white border-t border-gray-200'
+                  : 'bg-white/95 backdrop-blur-md border-t border-white/20 shadow-lg'
+                } rounded-b-lg mx-2 mb-2`}>
+                <div className="px-4 py-3 space-y-2">
+                  {navItems.map((item) => (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        scrollToSection(item.href.slice(1));
+                        setIsMenuOpen(false);
+                      }}
+                      className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${activeSection === item.href.slice(1)
+                          ? 'text-blue-600 bg-blue-50 shadow-sm'
+                          : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                        }`}
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800"></div>
+        <div className="absolute inset-0 bg-black/20"></div>
+
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-pulse">
+            Hi, I'm <span className="bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">Noah</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-90">
+            Full Stack Developer & UI/UX Designer
+          </p>
+          <p className="text-lg mb-12 opacity-80 max-w-2xl mx-auto">
+            I create exceptional digital experiences that combine beautiful design with powerful functionality.
+            Let's build something amazing together.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => scrollToSection('projects')}
+              className="px-8 py-4 bg-white text-gray-900 rounded-full font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              View My Work <ArrowRight size={20} />
+            </button>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-gray-900 transform hover:scale-105 transition-all duration-300"
+            >
+              Get In Touch
+            </button>
+          </div>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <ChevronDown size={32} className="text-white" />
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">About Me</h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <img
+                src="https://i.imgur.com/W0tBPKw.jpeg"
+                alt="Profile"
+                className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
+              />
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-semibold mb-4 text-gray-900">
+                Passionate Developer & Creative Problem Solver
+              </h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                With over 2 years of experience in web development, I specialize in creating
+                modern, responsive applications using the latest technologies. I love turning
+                complex problems into simple, beautiful solutions.
+              </p>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                When I'm not coding, you can find me exploring new technologies, contributing
+                to open-source projects, or sharing knowledge with the developer community.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">5</div>
+                  <div className="text-gray-600">Projects Completed</div>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">2+</div>
+                  <div className="text-gray-600">Years Experience</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+
+      <section id="skills" className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Skills & Technologies</h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6"></div>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              A comprehensive toolkit spanning full-stack development, cloud infrastructure, and performance optimization
+            </p>
+          </div>
+
+          {/* Category Filters */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {categories.map((category) => {
+              const IconComponent = category.icon;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all duration-300 ${activeCategory === category.id
+                    ? `bg-gradient-to-r ${category.color} text-white shadow-lg transform scale-105`
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                    }`}
+                >
+                  <IconComponent size={16} />
+                  <span className="text-sm">{category.name}</span>
+                  {category.id !== 'all' && (
+                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
+                      {groupedSkills[category.id]?.length || 0}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Skills Display */}
+          {activeCategory === 'all' ? (
+            // Grouped view for "All Skills"
+            <div className="space-y-12">
+              {categories.slice(1).map((category) => {
+                const categorySkills = groupedSkills[category.id];
+                if (!categorySkills || categorySkills.length === 0) return null;
+
+                const IconComponent = category.icon;
+                return (
+                  <div key={category.id} className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className={`p-3 rounded-xl bg-gradient-to-r ${category.color} text-white`}>
+                        <IconComponent size={24} />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900">{category.name}</h3>
+                        <p className="text-gray-500">{categorySkills.length} technologies</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      {categorySkills.map((skill, index) => (
+                        <span
+                          key={index}
+                          className={`px-4 py-2 rounded-lg bg-gradient-to-r ${category.color} text-white font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200`}
+                        >
+                          {skill.name}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            // Filtered view for specific category
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {filteredSkills.map((skill, index) => {
+                const category = categories.find(cat => cat.id === skill.category);
+                return (
+                  <div
+                    key={index}
+                    className={`p-4 rounded-xl bg-gradient-to-r ${category?.color || 'from-gray-500 to-gray-600'} text-white font-medium text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                  >
+                    {skill.name}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Stats Summary */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">
+                {skills.filter(s => s.category === 'programming').length}
+              </div>
+              <div className="text-gray-600 font-medium">Languages</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">
+                {skills.filter(s => ['backend', 'frontend'].includes(s.category)).length}
+              </div>
+              <div className="text-gray-600 font-medium">Frameworks</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">
+                {skills.filter(s => ['devops', 'systems'].includes(s.category)).length}
+              </div>
+              <div className="text-gray-600 font-medium">DevOps Tools</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
+              <div className="text-3xl font-bold text-orange-600 mb-2">
+                {categories.length - 1}
+              </div>
+              <div className="text-gray-600 font-medium">Categories</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-cyan-400/10 to-pink-400/10 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-20">
+            <div className="inline-block">
+              <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
+                Featured Projects
+              </h2>
+              <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mx-auto rounded-full"></div>
+              <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-2 rounded-full"></div>
+            </div>
+            <p className="text-gray-600 text-lg mt-6 max-w-2xl mx-auto">
+              Discover some of my most exciting projects, crafted with passion and cutting-edge technology
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+            {projects.map((project, index) => (
+              <div
+                key={project.id}
+                className="group relative bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-white/50"
+                onMouseEnter={() => setHoveredProject(project.id)}
+                onMouseLeave={() => setHoveredProject(null)}
+                style={{
+                  animationDelay: `${index * 200}ms`
+                }}
+              >
+                {/* Glowing border effect */}
+                <div className={`absolute inset-0 bg-gradient-to-r ${project.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-2xl`}></div>
+                <div className="absolute inset-0.5 bg-white rounded-2xl"></div>
+
+                <div className="relative">
+                  <ImageCarousel images={project.images} alt={project.title} color={project.color} />
+
+                  <div className="p-8">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
+                        {project.title}
+                      </h3>
+                      <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${project.color} animate-pulse`}></div>
+                    </div>
+
+                    <p className="text-gray-600 mb-6 leading-relaxed">
+                      {project.description}
+                    </p>
+
+                  <div className="flex flex-wrap gap-3 mb-8">
+                    {project.tech.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="group/tech relative px-4 py-2 text-gray-800 text-sm rounded-full font-medium border border-gray-200 backdrop-blur-sm hover:scale-105 hover:shadow-md transition-all duration-300 cursor-default overflow-hidden bg-white/80"
+                        style={{
+                          animationDelay: `${techIndex * 100}ms`
+                        }}
+                      >
+                        {/* Dynamic gradient background */}
+                        <div 
+                          className={`absolute inset-0 bg-gradient-to-r ${project.color} opacity-0 group-hover/tech:opacity-15 transition-opacity duration-300`}
+                        ></div>
+                        
+                        {/* Tech name */}
+                        <span className="relative z-10">{tech}</span>
+                        
+                        {/* Shine effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/tech:translate-x-full transition-transform duration-700"></div>
+                      </span>
+                    ))}
+                  </div>
+
+                    <div className="flex gap-6">
+                      <a
+                        href={project.github}
+                        className="group/link flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-all duration-300 font-medium"
+                      >
+                        <div className="p-2 rounded-full bg-gray-100 group-hover/link:bg-blue-100 group-hover/link:scale-110 transition-all duration-300">
+                          <Github size={18} />
+                        </div>
+                        <span className="group-hover/link:translate-x-1 transition-transform duration-300">Code</span>
+                      </a>
+                      <a
+                        href={project.demo}
+                        className="group/link flex items-center gap-3 text-gray-600 hover:text-purple-600 transition-all duration-300 font-medium"
+                      >
+                        <div className="p-2 rounded-full bg-gray-100 group-hover/link:bg-purple-100 group-hover/link:scale-110 transition-all duration-300">
+                          <ExternalLink size={18} />
+                        </div>
+                        <span className="group-hover/link:translate-x-1 transition-transform duration-300">Demo</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating elements */}
+                {hoveredProject === project.id && (
+                  <div className="absolute top-4 left-4">
+                    <div className="w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce absolute -top-2 -right-2" style={{ animationDelay: '0.5s' }}></div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Let's Work Together</h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mb-8"></div>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              I'm always interested in new opportunities and exciting projects.
+              Let's discuss how we can bring your ideas to life.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-2xl font-semibold mb-6">Get In Touch</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <Mail className="text-blue-400" size={24} />
+                  <span>noahchenfinalfantasy@gmail.com</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Github className="text-purple-400" size={24} />
+                  <a href="https://github.com/ipyton" target="_blank" rel="noopener noreferrer" className="text-purple-400 underline">
+                    github.com/ipyton
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <Linkedin className="text-blue-400" size={24} />
+                  <a href="https://www.linkedin.com/in/noah-zhiheng-chen-98a841293/" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                    https://www.linkedin.com/in/noah-zhiheng-chen-98a841293/
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="space-y-6">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    rows="4"
+                    placeholder="Your Message"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                  ></textarea>
+                </div>
+                <button
+                  onClick={() => alert('Message sent! (This is a demo - integrate with your preferred email service)')}
+                  className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300"
+                >
+                  Send Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black text-white py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p>&copy; 2025 Noah Chen. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Portfolio;

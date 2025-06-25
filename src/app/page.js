@@ -107,8 +107,8 @@ const ImageCarousel = ({ images, alt, color }) => {
             key={index}
             onClick={() => goToImage(index)}
             className={`relative w-3 h-3 rounded-full transition-all duration-300 ${index === currentIndex
-                ? 'bg-white scale-125 shadow-lg'
-                : 'bg-white/50 hover:bg-white/75 hover:scale-110'
+              ? 'bg-white scale-125 shadow-lg'
+              : 'bg-white/50 hover:bg-white/75 hover:scale-110'
               }`}
             aria-label={`Go to image ${index + 1}`}
           >
@@ -147,29 +147,29 @@ const Portfolio = () => {
   const [hoveredProject, setHoveredProject] = useState(null);
 
 
-useEffect(() => {
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 50);
-    
-    // Add scroll-based section detection
-    const sections = ['home', 'about', 'skills', 'projects', 'contact'];
-    const scrollPosition = window.scrollY + 100; // Offset for better detection
-    
-    for (const section of sections) {
-      const element = document.getElementById(section);
-      if (element) {
-        const { offsetTop, offsetHeight } = element;
-        if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-          setActiveSection(section);
-          break;
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+
+      // Add scroll-based section detection
+      const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+      const scrollPosition = window.scrollY + 100; // Offset for better detection
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
         }
       }
-    }
-  };
-  
-  window.addEventListener('scroll', handleScroll);
-  return () => window.removeEventListener('scroll', handleScroll);
-}, []);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const projects = [
     {
@@ -347,19 +347,130 @@ useEffect(() => {
       setIsMenuOpen(false);
     }
   };
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  
+  // 发送状态
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  // Firebase Functions URL - 请替换为你的实际URL
+  const FUNCTIONS_BASE_URL = 'https://YOUR_REGION-YOUR_PROJECT_ID.cloudfunctions.net';
+
+  // 处理输入变化
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // 清除错误信息
+    if (error) setError('');
+    if (success) setSuccess(false);
+  };
+
+  // 表单验证
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      setError('请输入您的姓名');
+      return false;
+    }
+    if (!formData.email.trim()) {
+      setError('请输入您的邮箱');
+      return false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('请输入有效的邮箱地址');
+      return false;
+    }
+    if (!formData.message.trim()) {
+      setError('请输入您的消息');
+      return false;
+    }
+    return true;
+  };
+
+  // 发送邮件函数
+  const sendEmail = async (emailData) => {
+    const response = await fetch(`${FUNCTIONS_BASE_URL}/sendEmail`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(emailData)
+    });
+
+    const result = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(result.error || '发送失败');
+    }
+
+    return result;
+  };
+
+  // 处理表单提交
+  const handleSubmit = async () => {
+    // 验证表单
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      // 准备邮件数据
+      const emailData = {
+        sender: formData.name,
+        content: formData.message,
+        email: formData.email,
+        recipientEmail: 'your-email@example.com', // 替换为你的邮箱
+        recipientName: 'Website Admin',
+        subject: `来自 ${formData.name} 的网站联系`
+      };
+
+      // 发送邮件
+      const result = await sendEmail(emailData);
+      
+      console.log('邮件发送成功:', result);
+      
+      // 显示成功消息
+      setSuccess(true);
+      
+      // 清空表单
+      setFormData({
+        name: '',
+        email: '',
+        message: ''
+      });
+
+    } catch (err) {
+      console.error('发送失败:', err);
+      setError(err.message || '发送失败，请稍后重试');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
-          : 'bg-gradient-to-b from-black/20 to-transparent backdrop-blur-sm'
+        ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
+        : 'bg-gradient-to-b from-black/20 to-transparent backdrop-blur-sm'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className={`text-2xl font-bold transition-all duration-300 ${isScrolled
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
-                : 'text-white drop-shadow-lg'
+              ? 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
+              : 'text-white drop-shadow-lg'
               }`}>
               Noah's Portfolio
             </div>
@@ -371,12 +482,12 @@ useEffect(() => {
                   key={item.name}
                   onClick={() => scrollToSection(item.href.slice(1))}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${activeSection === item.href.slice(1)
-                      ? isScrolled
-                        ? 'text-blue-600 bg-blue-50 shadow-sm'
-                        : 'text-white bg-white/20 backdrop-blur-sm shadow-lg'
-                      : isScrolled
-                        ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
-                        : 'text-white/90 hover:text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
+                    ? isScrolled
+                      ? 'text-blue-600 bg-blue-50 shadow-sm'
+                      : 'text-white bg-white/20 backdrop-blur-sm shadow-lg'
+                    : isScrolled
+                      ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
+                      : 'text-white/90 hover:text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
                     }`}
                 >
                   {item.name}
@@ -387,8 +498,8 @@ useEffect(() => {
             {/* Mobile menu button */}
             <button
               className={`md:hidden p-2 rounded-lg transition-all duration-300 ${isScrolled
-                  ? 'text-gray-700 hover:bg-gray-100'
-                  : 'text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
+                ? 'text-gray-700 hover:bg-gray-100'
+                : 'text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
                 }`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -400,8 +511,8 @@ useEffect(() => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className={`${isScrolled
-                  ? 'bg-white border-t border-gray-200'
-                  : 'bg-white/95 backdrop-blur-md border-t border-white/20 shadow-lg'
+                ? 'bg-white border-t border-gray-200'
+                : 'bg-white/95 backdrop-blur-md border-t border-white/20 shadow-lg'
                 } rounded-b-lg mx-2 mb-2`}>
                 <div className="px-4 py-3 space-y-2">
                   {navItems.map((item) => (
@@ -412,8 +523,8 @@ useEffect(() => {
                         setIsMenuOpen(false);
                       }}
                       className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${activeSection === item.href.slice(1)
-                          ? 'text-blue-600 bg-blue-50 shadow-sm'
-                          : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                        ? 'text-blue-600 bg-blue-50 shadow-sm'
+                        : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
                         }`}
                     >
                       {item.name}
@@ -431,44 +542,44 @@ useEffect(() => {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800"></div>
         <div className="absolute inset-0 bg-black/20"></div>
 
-<div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-  <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-pulse">
-    Hi, I'm <span className="bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">Noah</span>
-  </h1>
-  <p className="text-xl md:text-2xl mb-8 opacity-90">
-    Full Stack Developer & UI/UX Designer
-  </p>
-  <p className="text-lg md:text-xl font-medium mb-8 opacity-85 tracking-wide">
-    <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
-      Versatile
-    </span>
-    <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
-      Responsible
-    </span>
-    <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
-      Communicative
-    </span>
-  </p>
-  <p className="text-lg mb-12 opacity-80 max-w-2xl mx-auto">
-    I create exceptional digital experiences that combine beautiful design with powerful functionality.
-    Let's build something amazing together.
-  </p>
-  
-  <div className="flex flex-col sm:flex-row gap-4 justify-center">
-    <button
-      onClick={() => scrollToSection('projects')}
-      className="px-8 py-4 bg-white text-gray-900 rounded-full font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
-    >
-      View My Work <ArrowRight size={20} />
-    </button>
-    <button
-      onClick={() => scrollToSection('contact')}
-      className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-gray-900 transform hover:scale-105 transition-all duration-300"
-    >
-      Get In Touch
-    </button>
-  </div>
-</div>
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-pulse">
+            Hi, I'm <span className="bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">Noah</span>
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-90">
+            Full Stack Developer & UI/UX Designer
+          </p>
+          <p className="text-lg md:text-xl font-medium mb-8 opacity-85 tracking-wide">
+            <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
+              Versatile
+            </span>
+            <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
+              Responsible
+            </span>
+            <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
+              Communicative
+            </span>
+          </p>
+          <p className="text-lg mb-12 opacity-80 max-w-2xl mx-auto">
+            I create exceptional digital experiences that combine beautiful design with powerful functionality.
+            Let's build something amazing together.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => scrollToSection('projects')}
+              className="px-8 py-4 bg-white text-gray-900 rounded-full font-semibold hover:bg-gray-100 transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+            >
+              View My Work <ArrowRight size={20} />
+            </button>
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-gray-900 transform hover:scale-105 transition-all duration-300"
+            >
+              Get In Touch
+            </button>
+          </div>
+        </div>
 
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ChevronDown size={32} className="text-white" />
@@ -691,28 +802,28 @@ useEffect(() => {
                       {project.description}
                     </p>
 
-                  <div className="flex flex-wrap gap-3 mb-8">
-                    {project.tech.map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="group/tech relative px-4 py-2 text-gray-800 text-sm rounded-full font-medium border border-gray-200 backdrop-blur-sm hover:scale-105 hover:shadow-md transition-all duration-300 cursor-default overflow-hidden bg-white/80"
-                        style={{
-                          animationDelay: `${techIndex * 100}ms`
-                        }}
-                      >
-                        {/* Dynamic gradient background */}
-                        <div 
-                          className={`absolute inset-0 bg-gradient-to-r ${project.color} opacity-0 group-hover/tech:opacity-15 transition-opacity duration-300`}
-                        ></div>
-                        
-                        {/* Tech name */}
-                        <span className="relative z-10">{tech}</span>
-                        
-                        {/* Shine effect */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/tech:translate-x-full transition-transform duration-700"></div>
-                      </span>
-                    ))}
-                  </div>
+                    <div className="flex flex-wrap gap-3 mb-8">
+                      {project.tech.map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className="group/tech relative px-4 py-2 text-gray-800 text-sm rounded-full font-medium border border-gray-200 backdrop-blur-sm hover:scale-105 hover:shadow-md transition-all duration-300 cursor-default overflow-hidden bg-white/80"
+                          style={{
+                            animationDelay: `${techIndex * 100}ms`
+                          }}
+                        >
+                          {/* Dynamic gradient background */}
+                          <div
+                            className={`absolute inset-0 bg-gradient-to-r ${project.color} opacity-0 group-hover/tech:opacity-15 transition-opacity duration-300`}
+                          ></div>
+
+                          {/* Tech name */}
+                          <span className="relative z-10">{tech}</span>
+
+                          {/* Shine effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/tech:translate-x-full transition-transform duration-700"></div>
+                        </span>
+                      ))}
+                    </div>
 
                     <div className="flex gap-6">
                       <a
@@ -786,36 +897,81 @@ useEffect(() => {
               </div>
             </div>
 
-            <div>
-              <div className="space-y-6">
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-                  />
+            <div className="space-y-6">
+              {/* 成功消息 */}
+              {success && (
+                <div className="p-4 bg-green-900/50 border border-green-500 rounded-lg text-green-400">
+                  ✅ Successful, I will connect you as soon as possible.
                 </div>
-                <div>
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-                  />
+              )}
+
+              {/* 错误消息 */}
+              {error && (
+                <div className="p-4 bg-red-900/50 border border-red-500 rounded-lg text-red-400">
+                  ❌ {error}
                 </div>
-                <div>
-                  <textarea
-                    rows="4"
-                    placeholder="Your Message"
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors resize-none"
-                  ></textarea>
-                </div>
-                <button
-                  onClick={() => alert('Message sent! (This is a demo - integrate with your preferred email service)')}
-                  className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-300"
-                >
-                  Send Message
-                </button>
+              )}
+
+              {/* 姓名输入 */}
+              <div>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your Name"
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                />
               </div>
+
+              {/* 邮箱输入 */}
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Your Email"
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+              </div>
+
+              {/* 消息输入 */}
+              <div>
+                <textarea
+                  rows="4"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Your Message"
+                  disabled={isLoading}
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+              </div>
+
+              {/* 提交按钮 */}
+              <button
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className={`w-full px-8 py-4 rounded-lg font-semibold transform transition-all duration-300 ${isLoading
+                    ? 'bg-gray-600 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105'
+                  }`}
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Sending...
+                  </span>
+                ) : (
+                  'Send Message'
+                )}
+              </button>
             </div>
           </div>
         </div>

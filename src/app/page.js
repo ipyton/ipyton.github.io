@@ -762,33 +762,6 @@ const Portfolio = () => {
             </div>
           )}
 
-          {/* Stats Summary */}
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
-              <div className="text-4xl font-bold text-blue-600 mb-3">
-                {skills.filter(s => s.category === 'programming').length}
-              </div>
-              <div className="text-gray-700 font-semibold text-lg">Programming Languages</div>
-            </div>
-            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
-              <div className="text-4xl font-bold text-green-600 mb-3">
-                {skills.filter(s => ['backend', 'frontend'].includes(s.category)).length}
-              </div>
-              <div className="text-gray-700 font-semibold text-lg">Frameworks</div>
-            </div>
-            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
-              <div className="text-4xl font-bold text-purple-600 mb-3">
-                {skills.filter(s => ['devops', 'systems'].includes(s.category)).length}
-              </div>
-              <div className="text-gray-700 font-semibold text-lg">DevOps Tools</div>
-            </div>
-            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
-              <div className="text-4xl font-bold text-orange-600 mb-3">
-                {categories.length - 1}
-              </div>
-              <div className="text-gray-700 font-semibold text-lg">Categories</div>
-            </div>
-          </div>
         </div>
       </section>
       {/* Projects Section */}

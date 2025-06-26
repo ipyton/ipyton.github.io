@@ -1,4 +1,5 @@
-/* Enhanced project card hover effects */
+@import "tailwindcss";
+
 .project-card {
   position: relative;
   overflow: hidden;

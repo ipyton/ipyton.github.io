@@ -2,14 +2,21 @@ const {setGlobalOptions} = require("firebase-functions");
 const {onRequest} = require("firebase-functions/https");
 const logger = require("firebase-functions/logger");
 const cors = require('cors')({origin: true});
+const mailjet = require('node-mailjet');
+const functions = require("firebase-functions");
 
-const mailjet = require('node-mailjet')
-  .connect(process.env.MAILJET_API_KEY, process.env.MAILJET_SECRET_KEY);
+
+const { public_key, private_key } = functions.config().mailjet;
+
+const client = mailjet.apiConnect(
+  public_key,
+  private_key
+);
 
 
 setGlobalOptions({ maxInstances: 10 });
 
-exports.sendEmail = onRequest(async (request, response) => {
+exports.sendEmail = onRequest(  { region: "australia-southeast1" },async (request, response) => {
   return cors(request, response, async () => {
     try {
       if (request.method !== 'POST') {
@@ -49,7 +56,7 @@ exports.sendEmail = onRequest(async (request, response) => {
       });
 
       // 使用 Mailjet 发送邮件
-      const result = await mailjet
+      const result = await client
         .post("send", {'version': 'v3.1'})
         .request({
           Messages: [
@@ -110,7 +117,7 @@ exports.sendEmail = onRequest(async (request, response) => {
 });
 
 // 使用 Mailjet 模板发送邮件的函数
-exports.sendEmailWithTemplate = onRequest(async (request, response) => {
+exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, async (request, response) => {
   return cors(request, response, async () => {
     try {
       if (request.method !== 'POST') {
@@ -151,7 +158,7 @@ exports.sendEmailWithTemplate = onRequest(async (request, response) => {
       });
 
       // 使用 Mailjet 模板发送邮件
-      const result = await mailjet
+      const result = await client
         .post("send", {'version': 'v3.1'})
         .request({
           Messages: [

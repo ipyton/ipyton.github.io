@@ -1,0 +1,94 @@
+[debug] [2025-06-26T05:01:16.376Z] ----------------------------------------------------------------------
+[debug] [2025-06-26T05:01:16.378Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2025-06-26T05:01:16.379Z] CLI Version:   14.8.0
+[debug] [2025-06-26T05:01:16.379Z] Platform:      darwin
+[debug] [2025-06-26T05:01:16.379Z] Node Version:  v22.14.0
+[debug] [2025-06-26T05:01:16.379Z] Time:          Thu Jun 26 2025 15:01:16 GMT+1000 (Australian Eastern Standard Time)
+[debug] [2025-06-26T05:01:16.380Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-06-26T05:01:16.513Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-06-26T05:01:16.513Z] > authorizing via signed-in user (czh1278341834@gmail.com)
+[debug] [2025-06-26T05:01:16.514Z] [iam] checking project resume-62c0e for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2025-06-26T05:01:16.514Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:16.514Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:16.515Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e:testIamPermissions [none]
+[debug] [2025-06-26T05:01:16.515Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e:testIamPermissions x-goog-quota-user=projects/resume-62c0e
+[debug] [2025-06-26T05:01:16.515Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-06-26T05:01:17.773Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e:testIamPermissions 200
+[debug] [2025-06-26T05:01:17.773Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2025-06-26T05:01:17.774Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:17.774Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:17.774Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/resume-62c0e/serviceAccounts/resume-62c0e@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2025-06-26T05:01:17.774Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/resume-62c0e/serviceAccounts/resume-62c0e@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2025-06-26T05:01:19.246Z] <<< [apiv2][status] POST https://iam.googleapis.com/v1/projects/resume-62c0e/serviceAccounts/resume-62c0e@appspot.gserviceaccount.com:testIamPermissions 200
+[debug] [2025-06-26T05:01:19.246Z] <<< [apiv2][body] POST https://iam.googleapis.com/v1/projects/resume-62c0e/serviceAccounts/resume-62c0e@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
+[info] 
+[info] === Deploying to 'resume-62c0e'...
+[info] 
+[info] i  deploying functions 
+[debug] [2025-06-26T05:01:19.250Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:19.250Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:19.250Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e [none]
+[debug] [2025-06-26T05:01:19.496Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e 200
+[debug] [2025-06-26T05:01:19.496Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/resume-62c0e {"projectNumber":"1054987478975","projectId":"resume-62c0e","lifecycleState":"ACTIVE","name":"resume","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2025-06-25T09:59:06.275810Z"}
+[info] i  functions: preparing codebase default for deployment 
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[info] i  artifactregistry: ensuring required API artifactregistry.googleapis.com is enabled... 
+[debug] [2025-06-26T05:01:19.498Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:19.498Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:19.498Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/resume-62c0e/adminSdkConfig [none]
+[debug] [2025-06-26T05:01:20.200Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/resume-62c0e/adminSdkConfig 200
+[debug] [2025-06-26T05:01:20.200Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/resume-62c0e/adminSdkConfig {"projectId":"resume-62c0e","storageBucket":"resume-62c0e.firebasestorage.app"}
+[debug] [2025-06-26T05:01:20.201Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:20.201Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:20.202Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs [none]
+[debug] [2025-06-26T05:01:20.824Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs 200
+[debug] [2025-06-26T05:01:20.825Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs {"configs":[{"name":"projects/resume-62c0e/configs/mailjet"}]}
+[debug] [2025-06-26T05:01:20.825Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:20.825Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:20.825Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables [none]
+[debug] [2025-06-26T05:01:21.194Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables 200
+[debug] [2025-06-26T05:01:21.194Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables {"variables":[{"name":"projects/resume-62c0e/configs/mailjet/variables/private_key","updateTime":"2025-06-26T03:01:48.494563882Z"},{"name":"projects/resume-62c0e/configs/mailjet/variables/public_key","updateTime":"2025-06-26T03:01:49.176544166Z"}]}
+[debug] [2025-06-26T05:01:21.195Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:21.195Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:21.195Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:21.195Z] Checked if tokens are valid: true, expires at: 1750916105935
+[debug] [2025-06-26T05:01:21.196Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables/private_key [none]
+[debug] [2025-06-26T05:01:21.197Z] >>> [apiv2][query] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables/public_key [none]
+[debug] [2025-06-26T05:01:21.582Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables/private_key 200
+[debug] [2025-06-26T05:01:21.582Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables/private_key {"name":"projects/resume-62c0e/configs/mailjet/variables/private_key","updateTime":"2025-06-26T03:01:48.494563882Z","text":"8ebdd494e7e8e821120834a1ee0ea11e"}
+[debug] [2025-06-26T05:01:21.677Z] <<< [apiv2][status] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables/public_key 200
+[debug] [2025-06-26T05:01:21.677Z] <<< [apiv2][body] GET https://runtimeconfig.googleapis.com/v1beta1/projects/resume-62c0e/configs/mailjet/variables/public_key {"name":"projects/resume-62c0e/configs/mailjet/variables/public_key","updateTime":"2025-06-26T03:01:49.176544166Z","text":"8ebdd494e7e8e821120834a1ee0ea11e"}
+[debug] [2025-06-26T05:01:21.679Z] Validating nodejs source
+[debug] [2025-06-26T05:01:22.241Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.6.0",
+    "firebase-functions": "^6.0.1",
+    "node-mailjet": "^6.0.8"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.1.0"
+  },
+  "private": true
+}
+[debug] [2025-06-26T05:01:22.242Z] Building nodejs source
+[info] i  functions: Loading and analyzing source code for codebase default to determine what to deploy 
+[debug] [2025-06-26T05:01:22.242Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-06-26T05:01:22.250Z] Found firebase-functions binary at '/Users/noah/Desktop/ipyton.github.io/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8393
+
+[debug] [2025-06-26T05:01:22.600Z] Got response from /__/functions.yaml {"endpoints":{"sendEmail":{"timeoutSeconds":60,"minInstances":null,"maxInstances":10,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","region":["australia-southeast1"],"secretEnvironmentVariables":[{"key":"MAILJET_PUBLIC_KEY"},{"key":"MAILJET_PRIVATE_KEY"}],"labels":{},"httpsTrigger":{},"entryPoint":"sendEmail"},"sendEmailWithTemplate":{"timeoutSeconds":60,"minInstances":null,"maxInstances":10,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","region":["australia-southeast1"],"secretEnvironmentVariables":[{"key":"MAILJET_PUBLIC_KEY"},{"key":"MAILJET_PRIVATE_KEY"}],"labels":{},"httpsTrigger":{},"entryPoint":"sendEmailWithTemplate"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{},"params":[{"type":"secret","name":"MAILJET_PUBLIC_KEY"},{"type":"secret","name":"MAILJET_PRIVATE_KEY"}]}

@@ -215,10 +215,10 @@ const Portfolio = () => {
   const projects = [
     {
       id: 1,
-      title: "Movie Watching Community",
-      description: "",
+      title: "Movie Enthusiasts' Community",
+      description: "A Community let you watch movies and share ideas.",
       images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"],
-      tech: ["Python", "Flask", "Spring Boot", "React.js", "WebSocket", "Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
+      tech: ["Python", "Flask", "Spring Boot", "React.js", "WebSocket", "Apache Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
         "FFmpeg", "MinIO", "Fluent Bit", "Prometheus", "Grafana", "Elasticsearch", "GitHub Actions"],
       github: "https://github.com/ipyton/vydeos",
       demo: "https://vydeo.xyz",
@@ -229,17 +229,17 @@ const Portfolio = () => {
       title: "Dunder Debunk(password:$mallAmber19)",
       description: "React Native mobile app with real-time synchronization and offline support",
       images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
-      tech: ["React Native", "Firebase", "Redux", "AsyncStorage"],
+      tech: ["React", "MySql", "Redux", "Oracle Cloud", "Gemini", "Flask"],
       github: "#",
       demo: "https://dunderdebunk.pages.dev/",
-      category: "web"
+      category: "ai"
     },
     {
       id: 3,
-      title: "AI Chat Interface",
+      title: "Image Detection Service",
       description: "Modern chat interface with AI integration and real-time messaging",
       images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
-      tech: ["React", "Node.js", "OpenAI API", "Socket.io"],
+      tech: ["React", "Python","DynamoDB", "API Gateway", "lambda","Cognito"],
       github: "#",
       demo: "#",
       category: "ai"
@@ -249,20 +249,30 @@ const Portfolio = () => {
       title: "Portfolio Website",
       description: "Responsive portfolio website with modern animations and dark mode",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
-      tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+      tech: ["Next.js", "Node.js", "Tailwind CSS", "Google Cloud Functions", ""],
       github: "#",
       demo: "#",
       category: "web"
     },
     {
       id: 5,
-      title: "Portfolio Website",
-      description: "Responsive portfolio website with modern animations and dark mode",
+      title: "Book Management Platform",
+      description: "A cross-platform application",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
-      tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+      tech: ["Next.js", "Tailwind CSS", "GraphQL", "React Native"],
       github: "#",
       demo: "#",
-      category: "web"
+      category: "web/mobile"
+    },
+    {
+      id: 6,
+      title: "Blog Page",
+      description: "A Technology Blog",
+      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+      tech: ["WordPress"],
+      github: "#",
+      demo: "#",
+      category: "web/mobile"
     }
 
   ];

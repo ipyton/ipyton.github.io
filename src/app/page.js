@@ -6,6 +6,47 @@ import { Database, Cloud, Monitor, TestTube, Zap, Film, Server, GitBranch, BarCh
 import { Github, ExternalLink, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 
 
+
+const navBarStyles = {
+  // Enhanced scrolled state with stronger gaussian blur
+  scrolled: 'bg-white/60 backdrop-blur-3xl backdrop-saturate-200 shadow-2xl border-b border-gray-200/60',
+
+  // Enhanced initial state with stronger gaussian blur  
+  initial: 'bg-black/15 backdrop-blur-3xl backdrop-saturate-200 shadow-2xl',
+
+  // Logo styles remain the same
+  logoScrolled: 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-3xl font-bold',
+  logoInitial: 'text-white drop-shadow-lg text-3xl font-bold',
+
+  // Enhanced navigation item styles with blur
+  navItemActive: {
+    scrolled: 'text-blue-700 bg-blue-100/80 backdrop-blur-sm shadow-md border border-blue-200 font-semibold',
+    initial: 'text-white bg-white/20 backdrop-blur-md shadow-lg border border-white/40 font-semibold'
+  },
+  navItemInactive: {
+    scrolled: 'text-gray-800 hover:text-blue-700 hover:bg-blue-50/80 backdrop-blur-sm border border-transparent hover:border-blue-200 font-medium',
+    initial: 'text-white/95 hover:text-white hover:bg-white/20 backdrop-blur-md border border-white/30 hover:border-white/50 font-medium'
+  }
+};
+
+// Updated Skills Section with better visibility
+const skillsSectionStyles = {
+  // Main container with stronger background
+  container: 'py-24 bg-gradient-to-br from-slate-100 via-blue-50 to-purple-50 relative',
+
+  // Category buttons with better contrast
+  categoryButton: {
+    active: 'flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white shadow-xl transform scale-105 border-2 border-white/50',
+    inactive: 'flex items-center gap-2 px-6 py-3 rounded-full font-medium bg-white/90 text-gray-800 hover:bg-white border-2 border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-xl hover:scale-105'
+  },
+
+  // Skill cards with enhanced visibility
+  skillCard: 'p-6 rounded-2xl text-white font-semibold text-center shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white/30',
+
+  // Category sections with better backgrounds
+  categorySection: 'bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border-2 border-gray-100 hover:shadow-3xl transition-all duration-300'
+};
+
 const ImageCarousel = ({ images, alt, color }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -352,7 +393,7 @@ const Portfolio = () => {
     email: '',
     message: ''
   });
-  
+
   // 发送状态
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -368,7 +409,7 @@ const Portfolio = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // 清除错误信息
     if (error) setError('');
     if (success) setSuccess(false);
@@ -406,7 +447,7 @@ const Portfolio = () => {
     });
 
     const result = await response.json();
-    
+
     if (!response.ok) {
       throw new Error(result.error || '发送失败');
     }
@@ -423,7 +464,7 @@ const Portfolio = () => {
 
     setIsLoading(true);
     setError('');
-    
+
     try {
       // 准备邮件数据
       const emailData = {
@@ -437,12 +478,12 @@ const Portfolio = () => {
 
       // 发送邮件
       const result = await sendEmail(emailData);
-      
+
       console.log('邮件发送成功:', result);
-      
+
       // 显示成功消息
       setSuccess(true);
-      
+
       // 清空表单
       setFormData({
         name: '',
@@ -462,32 +503,32 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50'
-        : 'bg-gradient-to-b from-black/20 to-transparent backdrop-blur-sm'
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled
+        ? navBarStyles.scrolled
+        : navBarStyles.initial
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className={`text-2xl font-bold transition-all duration-300 ${isScrolled
-              ? 'bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
-              : 'text-white drop-shadow-lg'
+            <div className={`transition-all duration-300 ${isScrolled
+              ? 'text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'
+              : 'text-3xl font-bold text-white drop-shadow-lg'
               }`}>
               Noah's Portfolio
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex space-x-4">
               {navItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href.slice(1))}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${activeSection === item.href.slice(1)
+                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 border-2 ${activeSection === item.href.slice(1)
                     ? isScrolled
-                      ? 'text-blue-600 bg-blue-50 shadow-sm'
-                      : 'text-white bg-white/20 backdrop-blur-sm shadow-lg'
+                      ? 'text-blue-700 bg-blue-100 shadow-md border-blue-200 font-semibold'
+                      : 'text-white bg-white/25 backdrop-blur-sm shadow-lg border-white/30 font-semibold'
                     : isScrolled
-                      ? 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
-                      : 'text-white/90 hover:text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
+                      ? 'text-gray-800 hover:text-blue-700 hover:bg-blue-50 border-transparent hover:border-blue-200 font-medium'
+                      : 'text-white/95 hover:text-white hover:bg-white/25 backdrop-blur-sm border-white/20 hover:border-white/40 font-medium'
                     }`}
                 >
                   {item.name}
@@ -497,9 +538,9 @@ const Portfolio = () => {
 
             {/* Mobile menu button */}
             <button
-              className={`md:hidden p-2 rounded-lg transition-all duration-300 ${isScrolled
-                ? 'text-gray-700 hover:bg-gray-100'
-                : 'text-white hover:bg-white/20 backdrop-blur-sm drop-shadow-sm'
+              className={`md:hidden p-3 rounded-lg transition-all duration-300 ${isScrolled
+                ? 'text-gray-800 hover:bg-gray-100 border-2 border-gray-200'
+                : 'text-white hover:bg-white/25 backdrop-blur-sm border-2 border-white/30'
                 }`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
@@ -510,11 +551,8 @@ const Portfolio = () => {
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden">
-              <div className={`${isScrolled
-                ? 'bg-white border-t border-gray-200'
-                : 'bg-white/95 backdrop-blur-md border-t border-white/20 shadow-lg'
-                } rounded-b-lg mx-2 mb-2`}>
-                <div className="px-4 py-3 space-y-2">
+              <div className="bg-white/98 backdrop-blur-lg border-t-2 border-gray-200 rounded-b-2xl mx-2 mb-4 shadow-2xl">
+                <div className="px-6 py-4 space-y-3">
                   {navItems.map((item) => (
                     <button
                       key={item.name}
@@ -522,9 +560,9 @@ const Portfolio = () => {
                         scrollToSection(item.href.slice(1));
                         setIsMenuOpen(false);
                       }}
-                      className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-all duration-200 ${activeSection === item.href.slice(1)
-                        ? 'text-blue-600 bg-blue-50 shadow-sm'
-                        : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                      className={`block w-full text-left px-6 py-4 rounded-xl font-medium transition-all duration-200 border-2 ${activeSection === item.href.slice(1)
+                        ? 'text-blue-700 bg-blue-100 shadow-md border-blue-200 font-semibold'
+                        : 'text-gray-800 hover:text-blue-700 hover:bg-blue-50 border-transparent hover:border-blue-200'
                         }`}
                     >
                       {item.name}
@@ -536,6 +574,7 @@ const Portfolio = () => {
           )}
         </div>
       </nav>
+
 
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -634,33 +673,36 @@ const Portfolio = () => {
 
       {/* Skills Section */}
 
-      <section id="skills" className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section id="skills" className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Skills & Technologies</h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-6"></div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Skills & Technologies</h2>
+            <div className="w-24 h-2 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8 rounded-full"></div>
+            <p className="text-xl text-gray-700 max-w-2xl mx-auto font-medium">
               A comprehensive toolkit spanning full-stack development, cloud infrastructure, and performance optimization
             </p>
           </div>
 
           {/* Category Filters */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
             {categories.map((category) => {
               const IconComponent = category.icon;
               return (
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full font-medium transition-all duration-300 ${activeCategory === category.id
-                    ? `bg-gradient-to-r ${category.color} text-white shadow-lg transform scale-105`
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                  className={`flex items-center gap-3 px-6 py-3 rounded-full font-medium transition-all duration-300 border-2 ${activeCategory === category.id
+                    ? `bg-gradient-to-r ${category.color} text-white shadow-xl transform scale-105 border-white/50 font-semibold`
+                    : 'bg-white text-gray-800 hover:bg-white border-gray-200 hover:border-gray-300 shadow-lg hover:shadow-xl hover:scale-105'
                     }`}
                 >
-                  <IconComponent size={16} />
-                  <span className="text-sm">{category.name}</span>
+                  <IconComponent size={18} />
+                  <span className="font-medium">{category.name}</span>
                   {category.id !== 'all' && (
-                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">
+                    <span className={`text-xs px-2 py-1 rounded-full ${activeCategory === category.id
+                      ? 'bg-white/25 text-white'
+                      : 'bg-gray-200 text-gray-700'
+                      }`}>
                       {groupedSkills[category.id]?.length || 0}
                     </span>
                   )}
@@ -672,31 +714,31 @@ const Portfolio = () => {
           {/* Skills Display */}
           {activeCategory === 'all' ? (
             // Grouped view for "All Skills"
-            <div className="space-y-12">
+            <div className="space-y-16">
               {categories.slice(1).map((category) => {
                 const categorySkills = groupedSkills[category.id];
                 if (!categorySkills || categorySkills.length === 0) return null;
 
                 const IconComponent = category.icon;
                 return (
-                  <div key={category.id} className="bg-white rounded-2xl p-8 shadow-xl border border-gray-100">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className={`p-3 rounded-xl bg-gradient-to-r ${category.color} text-white`}>
-                        <IconComponent size={24} />
+                  <div key={category.id} className="bg-white/95 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border-2 border-gray-100 hover:shadow-3xl transition-all duration-300">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className={`p-4 rounded-2xl bg-gradient-to-r ${category.color} text-white shadow-lg`}>
+                        <IconComponent size={28} />
                       </div>
                       <div>
-                        <h3 className="text-2xl font-bold text-gray-900">{category.name}</h3>
-                        <p className="text-gray-500">{categorySkills.length} technologies</p>
+                        <h3 className="text-3xl font-bold text-gray-900">{category.name}</h3>
+                        <p className="text-gray-600 font-medium">{categorySkills.length} technologies</p>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {categorySkills.map((skill, index) => (
-                        <span
+                        <div
                           key={index}
-                          className={`px-4 py-2 rounded-lg bg-gradient-to-r ${category.color} text-white font-medium shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200`}
+                          className={`p-6 rounded-2xl bg-gradient-to-r ${category.color} text-white font-semibold text-center shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white/30`}
                         >
                           {skill.name}
-                        </span>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -705,13 +747,13 @@ const Portfolio = () => {
             </div>
           ) : (
             // Filtered view for specific category
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
               {filteredSkills.map((skill, index) => {
                 const category = categories.find(cat => cat.id === skill.category);
                 return (
                   <div
                     key={index}
-                    className={`p-4 rounded-xl bg-gradient-to-r ${category?.color || 'from-gray-500 to-gray-600'} text-white font-medium text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300`}
+                    className={`p-6 rounded-2xl bg-gradient-to-r ${category?.color || 'from-gray-500 to-gray-600'} text-white font-semibold text-center shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white/60`}
                   >
                     {skill.name}
                   </div>
@@ -721,37 +763,36 @@ const Portfolio = () => {
           )}
 
           {/* Stats Summary */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
+              <div className="text-4xl font-bold text-blue-600 mb-3">
                 {skills.filter(s => s.category === 'programming').length}
               </div>
-              <div className="text-gray-600 font-medium">Languages</div>
+              <div className="text-gray-700 font-semibold text-lg">Programming Languages</div>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">
+            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
+              <div className="text-4xl font-bold text-green-600 mb-3">
                 {skills.filter(s => ['backend', 'frontend'].includes(s.category)).length}
               </div>
-              <div className="text-gray-600 font-medium">Frameworks</div>
+              <div className="text-gray-700 font-semibold text-lg">Frameworks</div>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">
+            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
+              <div className="text-4xl font-bold text-purple-600 mb-3">
                 {skills.filter(s => ['devops', 'systems'].includes(s.category)).length}
               </div>
-              <div className="text-gray-600 font-medium">DevOps Tools</div>
+              <div className="text-gray-700 font-semibold text-lg">DevOps Tools</div>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">
+            <div className="bg-white/95 p-8 rounded-2xl shadow-2xl text-center border-2 border-gray-100">
+              <div className="text-4xl font-bold text-orange-600 mb-3">
                 {categories.length - 1}
               </div>
-              <div className="text-gray-600 font-medium">Categories</div>
+              <div className="text-gray-700 font-semibold text-lg">Categories</div>
             </div>
           </div>
         </div>
       </section>
-
       {/* Projects Section */}
-      <section id="projects" className="py-24 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 relative overflow-hidden">
+      <section id="projects" className="py-24 bg-gradient-to-br from-slate-100 via-blue-50 to-purple-50 relative">
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/10 to-purple-400/10 rounded-full blur-3xl"></div>
@@ -776,7 +817,7 @@ const Portfolio = () => {
             {projects.map((project, index) => (
               <div
                 key={project.id}
-                className="group relative bg-white/70 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-white/50"
+                className="project-card group relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-white/80"
                 onMouseEnter={() => setHoveredProject(project.id)}
                 onMouseLeave={() => setHoveredProject(null)}
                 style={{
@@ -806,7 +847,8 @@ const Portfolio = () => {
                       {project.tech.map((tech, techIndex) => (
                         <span
                           key={techIndex}
-                          className="group/tech relative px-4 py-2 text-gray-800 text-sm rounded-full font-medium border border-gray-200 backdrop-blur-sm hover:scale-105 hover:shadow-md transition-all duration-300 cursor-default overflow-hidden bg-white/80"
+                          className="tech-tag group/tech relative px-4 py-2 text-gray-800 text-sm rounded-full font-medium border border-gray-300 backdrop-blur-sm hover:scale-105 hover:shadow-md transition-all duration-300 cursor-default overflow-hidden bg-white"
+
                           style={{
                             animationDelay: `${techIndex * 100}ms`
                           }}
@@ -956,8 +998,8 @@ const Portfolio = () => {
                 onClick={handleSubmit}
                 disabled={isLoading}
                 className={`w-full px-8 py-4 rounded-lg font-semibold transform transition-all duration-300 ${isLoading
-                    ? 'bg-gray-600 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105'
+                  ? 'bg-gray-600 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 hover:scale-105'
                   }`}
               >
                 {isLoading ? (

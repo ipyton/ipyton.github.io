@@ -438,7 +438,7 @@ const Portfolio = () => {
 
   // 发送邮件函数
   const sendEmail = async (emailData) => {
-    const response = await fetch(`${FUNCTIONS_BASE_URL}/sendEmail`, {
+    const response = await fetch(`https://sendemailwithtemplate-3p67nbl3dq-ts.a.run.app`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

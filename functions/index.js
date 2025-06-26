@@ -130,7 +130,7 @@ exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, 
         email,
         recipientEmail,
         recipientName = 'User',
-        templateId,
+        templateId=7102947,
         subject = 'New Message'
       } = request.body;
 

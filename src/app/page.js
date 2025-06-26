@@ -418,19 +418,19 @@ const Portfolio = () => {
   // 表单验证
   const validateForm = () => {
     if (!formData.name.trim()) {
-      setError('请输入您的姓名');
+      setError('please input your name');
       return false;
     }
     if (!formData.email.trim()) {
-      setError('请输入您的邮箱');
+      setError('Please input your email');
       return false;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setError('请输入有效的邮箱地址');
+      setError('Please input a valid mail address');
       return false;
     }
     if (!formData.message.trim()) {
-      setError('请输入您的消息');
+      setError('Please input your message');
       return false;
     }
     return true;
@@ -449,7 +449,7 @@ const Portfolio = () => {
     const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(result.error || '发送失败');
+      throw new Error(result.error || 'Sended Error');
     }
 
     return result;
@@ -471,15 +471,12 @@ const Portfolio = () => {
         sender: formData.name,
         content: formData.message,
         email: formData.email,
-        recipientEmail: 'your-email@example.com', // 替换为你的邮箱
-        recipientName: 'Website Admin',
-        subject: `来自 ${formData.name} 的网站联系`
       };
 
       // 发送邮件
       const result = await sendEmail(emailData);
 
-      console.log('邮件发送成功:', result);
+      console.log('Successful:', result);
 
       // 显示成功消息
       setSuccess(true);
@@ -492,8 +489,8 @@ const Portfolio = () => {
       });
 
     } catch (err) {
-      console.error('发送失败:', err);
-      setError(err.message || '发送失败，请稍后重试');
+      console.error('Sent Error:', err);
+      setError(err.message || 'Sent Error, try again later');
     } finally {
       setIsLoading(false);
     }

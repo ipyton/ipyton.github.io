@@ -4,41 +4,123 @@ const logger = require("firebase-functions/logger");
 const cors = require('cors')({origin: true});
 const mailjet = require('node-mailjet');
 const functions = require("firebase-functions");
+const {defineSecret} = require('firebase-functions/params');
+const admin = require('firebase-admin');
 
+// Initialize Firebase Admin if not already initialized
+if (!admin.apps.length) {
+  admin.initializeApp();
+}
 
-const { public_key, private_key } = functions.config().mailjet;
+const db = admin.firestore();
 
-const client = mailjet.apiConnect(
-  public_key,
-  private_key
-);
-
+// Define secrets
+const mailjetPublicKey = defineSecret('MAILJET_PUBLIC_KEY');
+const mailjetPrivateKey = defineSecret('MAILJET_PRIVATE_KEY');
 
 setGlobalOptions({ maxInstances: 10 });
 
-exports.sendEmail = onRequest(  { region: "australia-southeast1" },async (request, response) => {
+// Rate limiting function
+async function checkRateLimit(senderEmail) {
+  const rateLimitRef = db.collection('rateLimits').doc(senderEmail);
+  const rateLimitDoc = await rateLimitRef.get();
+  
+  const now = Date.now();
+  const thirtySecondsAgo = now - 30000; // 30 seconds in milliseconds
+  
+  if (rateLimitDoc.exists) {
+    const lastSent = rateLimitDoc.data().lastSent;
+    
+    if (lastSent > thirtySecondsAgo) {
+      const waitTime = Math.ceil((lastSent - thirtySecondsAgo) / 1000);
+      return {
+        allowed: false,
+        waitTime: waitTime
+      };
+    }
+  }
+  
+  // Update the last sent timestamp
+  await rateLimitRef.set({
+    lastSent: now,
+    email: senderEmail
+  }, { merge: true });
+  
+  return { allowed: true };
+}
+
+exports.sendEmail = onRequest({ 
+  region: "australia-southeast1",
+  timeoutSeconds: 60,
+  memory: "256MB",
+  secrets: [mailjetPublicKey, mailjetPrivateKey] // Bind secrets to function
+}, async (request, response) => {
   return cors(request, response, async () => {
     try {
       if (request.method !== 'POST') {
         return response.status(405).json({ error: 'Method not allowed' });
       }
+
       const {
         sender,
         content,
         email,
         recipientEmail,
-        recipientName = 'User',
-        subject = 'New Message'
+        recipientName = "Recipient",
+        subject = 'Resume'
       } = request.body;
 
-      // 验证必需参数
-      if (!sender || !content || !email || !recipientEmail) {
+      // Validate required parameters
+      if (!sender || !content || !email) {
         return response.status(400).json({
-          error: 'Missing required parameters: sender, content, email, recipientEmail'
+          error: 'Missing required parameters: sender, content, email'
         });
       }
 
-      // 获取当前时间
+      // Check rate limit
+      try {
+        const rateLimitResult = await checkRateLimit(email);
+        if (!rateLimitResult.allowed) {
+          logger.info("Rate limit exceeded", { 
+            email, 
+            waitTime: rateLimitResult.waitTime,
+            structuredData: true 
+          });
+          return response.status(429).json({
+            error: 'Rate limit exceeded',
+            message: `Please wait ${rateLimitResult.waitTime} seconds before sending another email`,
+            waitTime: rateLimitResult.waitTime
+          });
+        }
+      } catch (rateLimitError) {
+        logger.error("Rate limit check failed", { 
+          error: rateLimitError.message,
+          email,
+          structuredData: true 
+        });
+        // Continue with email sending if rate limit check fails
+      }
+
+      // Initialize Mailjet client inside the function
+      let client;
+      try {
+        const publicKey = mailjetPublicKey.value();
+        const privateKey = mailjetPrivateKey.value();
+        
+        if (!publicKey || !privateKey) {
+          throw new Error('Missing Mailjet API keys in environment variables');
+        }
+        
+        client = mailjet.apiConnect(publicKey, privateKey);
+        logger.info("Mailjet client initialized successfully");
+      } catch (error) {
+        logger.error("Failed to initialize Mailjet client", { error: error.message });
+        return response.status(500).json({
+          error: 'Email service not properly configured'
+        });
+      }
+
+      // Get current time
       const currentTime = new Date().toLocaleString('zh-CN', {
         timeZone: 'Asia/Shanghai',
         year: 'numeric',
@@ -49,13 +131,16 @@ exports.sendEmail = onRequest(  { region: "australia-southeast1" },async (reques
         second: '2-digit'
       });
 
+      // Use recipientEmail if provided, otherwise use the sender's email as recipient
+      const finalRecipientEmail = recipientEmail || email;
+
       logger.info("Preparing to send email", {
         sender,
-        recipientEmail,
+        recipientEmail: finalRecipientEmail,
         structuredData: true
       });
 
-      // 使用 Mailjet 发送邮件
+      // Send email using Mailjet
       const result = await client
         .post("send", {'version': 'v3.1'})
         .request({
@@ -67,7 +152,7 @@ exports.sendEmail = onRequest(  { region: "australia-southeast1" },async (reques
               },
               To: [
                 {
-                  Email: recipientEmail,
+                  Email: finalRecipientEmail,
                   Name: recipientName
                 }
               ],
@@ -105,7 +190,7 @@ exports.sendEmail = onRequest(  { region: "australia-southeast1" },async (reques
       });
 
     } catch (error) {
-      logger.error("Error sending email", {error: error.message, structuredData: true});
+      logger.error("Error sending email", {error: error.message, stack: error.stack, structuredData: true});
       
       response.status(500).json({
         success: false,
@@ -116,8 +201,12 @@ exports.sendEmail = onRequest(  { region: "australia-southeast1" },async (reques
   });
 });
 
-// 使用 Mailjet 模板发送邮件的函数
-exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, async (request, response) => {
+exports.sendEmailWithTemplate = onRequest({ 
+  region: "australia-southeast1",
+  timeoutSeconds: 60,
+  memory: "256MB",
+  secrets: [mailjetPublicKey, mailjetPrivateKey] // Bind secrets to function
+}, async (request, response) => {
   return cors(request, response, async () => {
     try {
       if (request.method !== 'POST') {
@@ -128,15 +217,59 @@ exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, 
         sender,
         content,
         email,
-        recipientEmail,
-        recipientName = 'User',
-        templateId=7102947,
-        subject = 'New Message'
-      } = request.body;
 
-      if (!sender || !content || !email || !recipientEmail || !templateId) {
+      } = request.body;
+        const recipientEmail = "czh1278341834@gmail.com"
+        const recipientName = "Noah"
+        const templateId = 7102947
+        const subject = 'New Message'
+
+      if (!sender || !content || !email) {
         return response.status(400).json({
-          error: 'Missing required parameters: sender, content, email, recipientEmail, templateId'
+          error: 'Missing required parameters: sender, content, email'
+        });
+      }
+
+      // Check rate limit
+      try {
+        const rateLimitResult = await checkRateLimit(email);
+        if (!rateLimitResult.allowed) {
+          logger.info("Rate limit exceeded for template email", { 
+            email, 
+            waitTime: rateLimitResult.waitTime,
+            structuredData: true 
+          });
+          return response.status(429).json({
+            error: 'Rate limit exceeded',
+            message: `Please wait ${rateLimitResult.waitTime} seconds before sending another email`,
+            waitTime: rateLimitResult.waitTime
+          });
+        }
+      } catch (rateLimitError) {
+        logger.error("Rate limit check failed for template email", { 
+          error: rateLimitError.message,
+          email,
+          structuredData: true 
+        });
+        // Continue with email sending if rate limit check fails
+      }
+
+      // Initialize Mailjet client inside the function
+      let client;
+      try {
+        const publicKey = mailjetPublicKey.value();
+        const privateKey = mailjetPrivateKey.value();
+        
+        if (!publicKey || !privateKey) {
+          throw new Error('Missing Mailjet API keys in environment variables');
+        }
+        
+        client = mailjet.apiConnect(publicKey, privateKey);
+        logger.info("Mailjet client initialized successfully");
+      } catch (error) {
+        logger.error("Failed to initialize Mailjet client", { error: error.message });
+        return response.status(500).json({
+          error: 'Email service not properly configured'
         });
       }
 
@@ -157,15 +290,15 @@ exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, 
         structuredData: true
       });
 
-      // 使用 Mailjet 模板发送邮件
+      // Send email using Mailjet template
       const result = await client
         .post("send", {'version': 'v3.1'})
         .request({
           Messages: [
             {
               From: {
-                Email: process.env.FROM_EMAIL || "noreply@yourdomain.com",
-                Name: process.env.FROM_NAME || "Your App Name"
+                Email: process.env.FROM_EMAIL || "noreply@vydeo.xyz",
+                Name: process.env.FROM_NAME || "Queries"
               },
               To: [
                 {
@@ -199,7 +332,7 @@ exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, 
       });
 
     } catch (error) {
-      logger.error("Error sending email with template", {error: error.message, structuredData: true});
+      logger.error("Error sending email with template", {error: error.message, stack: error.stack, structuredData: true});
       
       response.status(500).json({
         success: false,
@@ -209,4 +342,3 @@ exports.sendEmailWithTemplate = onRequest(  { region: "australia-southeast1" }, 
     }
   });
 });
-

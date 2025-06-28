@@ -848,7 +848,7 @@ const Portfolio = () => {
                     </div>
 
                     <div className="flex gap-6">
-                      {tech.github.map((githubLink, index) => (                      <a
+                      {project.github.map((githubLink, index) => (                      <a
                         href={githubLink}
                         className="group/link flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-all duration-300 font-medium"
                       >

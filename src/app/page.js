@@ -271,8 +271,7 @@ const Portfolio = () => {
       description: "A Technology Blog",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["WordPress"],
-      github: ["#"],
-      demo: "#",
+      demo: "https://blog.vydeo.xyz/",
       category: "web/mobile"
     }
 

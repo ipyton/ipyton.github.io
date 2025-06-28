@@ -220,7 +220,7 @@ const Portfolio = () => {
       images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"],
       tech: ["Python", "Flask", "Spring Boot", "React.js", "WebSocket", "Apache Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
         "FFmpeg", "MinIO", "Fluent Bit", "Prometheus", "Grafana", "Elasticsearch", "GitHub Actions"],
-      github: "https://github.com/ipyton/vydeos",
+      github: ["https://github.com/ipyton/vydeos"],
       demo: "https://vydeo.xyz",
       category: "web"
     },
@@ -230,7 +230,7 @@ const Portfolio = () => {
       description: "React Native mobile app with real-time synchronization and offline support",
       images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
       tech: ["React", "MySql", "Redux", "Oracle Cloud", "Gemini", "Flask"],
-      github: "#",
+      github: ["#"],
       demo: "https://dunderdebunk.pages.dev/",
       category: "ai"
     },
@@ -240,7 +240,7 @@ const Portfolio = () => {
       description: "Modern chat interface with AI integration and real-time messaging",
       images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
       tech: ["React", "Python","DynamoDB", "API Gateway", "lambda","Cognito"],
-      github: "#",
+      github: ["#"],
       demo: "#",
       category: "ai"
     },
@@ -250,18 +250,18 @@ const Portfolio = () => {
       description: "Responsive portfolio website with modern animations and dark mode",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["Next.js", "Node.js", "Tailwind CSS", "Google Cloud Functions", ""],
-      github: "#",
-      demo: "#",
+      github: ["https://github.com/ipyton/ipyton.github.io"],
+      demo: "https://ipyton.github.io/",
       category: "web"
     },
     {
       id: 5,
-      title: "Book Management Platform",
-      description: "A cross-platform application",
+      title: "AppointEase",
+      description: "A Platform for Booking Appointments",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["Next.js", "Tailwind CSS", "GraphQL", "React Native"],
-      github: "#",
-      demo: "#",
+      github: ["https://github.com/ipyton/appointments"],
+      demo: "https://appointments.czh1278341834.workers.dev/register",
       category: "web/mobile"
     },
     {
@@ -270,7 +270,7 @@ const Portfolio = () => {
       description: "A Technology Blog",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["WordPress"],
-      github: "#",
+      github: ["#"],
       demo: "#",
       category: "web/mobile"
     }
@@ -848,15 +848,16 @@ const Portfolio = () => {
                     </div>
 
                     <div className="flex gap-6">
-                      <a
-                        href={project.github}
+                      {tech.github.map((githubLink, index) => (                      <a
+                        href={githubLink}
                         className="group/link flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-all duration-300 font-medium"
                       >
                         <div className="p-2 rounded-full bg-gray-100 group-hover/link:bg-blue-100 group-hover/link:scale-110 transition-all duration-300">
                           <Github size={18} />
                         </div>
                         <span className="group-hover/link:translate-x-1 transition-transform duration-300">Code</span>
-                      </a>
+                      </a>))}
+
                       <a
                         href={project.demo}
                         className="group/link flex items-center gap-3 text-gray-600 hover:text-purple-600 transition-all duration-300 font-medium"

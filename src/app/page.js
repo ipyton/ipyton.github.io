@@ -825,22 +825,6 @@ const Portfolio = () => {
                     </p>
 
                     <div className="flex flex-wrap gap-3 mb-8">
-                    {
-                      project.documents && project.documents.length > 0 && 
-                        project.documents.map((doc, docIndex) => {
-                          return (                        <a
-                          href={project.documents[0]}
-                          className="text-blue-600 hover:text-blue-800 transition-colors duration-300 font-medium"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          View Documentation
-                        </a>)
-                      }
-
-                      )
-                    
-                    }
 
                       {project.tech.map((tech, techIndex) => (
                         <span
@@ -864,6 +848,23 @@ const Portfolio = () => {
                         </span>
                       ))}
                     </div>
+                  {
+                      project.documents && project.documents.length > 0 && 
+                        project.documents.map((doc, docIndex) => {
+                          return (                        <a
+                          href={project.documents[0]}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-300 font-medium"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Documentation
+                        </a>)
+                      }
+
+                      )
+                    
+                    }
+
 
                     <div className="flex gap-6">
                       {project.github && project.github.length > 0 && project.github.map((githubLink, index) => (                      <a

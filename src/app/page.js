@@ -220,7 +220,7 @@ const Portfolio = () => {
       images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"],
       tech: ["Python", "Flask", "Spring Boot", "React.js", "WebSocket", "Apache Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
         "FFmpeg", "MinIO", "Fluent Bit", "Prometheus", "Grafana", "Elasticsearch", "GitHub Actions"],
-      github: ["https://github.com/ipyton/vydeos"],
+      github: ["https://github.com/ipyton/vydeos","https://github.com/ipyton/MovieService"],
       demo: "https://vydeo.xyz",
       category: "web"
     },
@@ -230,7 +230,8 @@ const Portfolio = () => {
       description: "React Native mobile app with real-time synchronization and offline support",
       images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
       tech: ["React", "MySql", "Redux", "Oracle Cloud", "Gemini", "Flask"],
-      github: ["#"],
+      documents: ["https://eportfolio.monash.edu/view/view.php?t=5b0e8302c18181971f0e"],
+      ///github: ["https://eportfolio.monash.edu/view/view.php?t=5b0e8302c18181971f0e"],
       demo: "https://dunderdebunk.pages.dev/",
       category: "ai"
     },
@@ -240,7 +241,7 @@ const Portfolio = () => {
       description: "Modern chat interface with AI integration and real-time messaging",
       images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
       tech: ["React", "Python","DynamoDB", "API Gateway", "lambda","Cognito"],
-      github: ["#"],
+      github: ["https://github.com/ipyton/picdetection/settings"],
       demo: "#",
       category: "ai"
     },
@@ -260,7 +261,7 @@ const Portfolio = () => {
       description: "A Platform for Booking Appointments",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["Next.js", "Tailwind CSS", "GraphQL", "React Native"],
-      github: ["https://github.com/ipyton/appointments"],
+      github: ["https://github.com/ipyton/appointments","https://github.com/ipyton/Appointment-System"],
       demo: "https://appointments.czh1278341834.workers.dev/register",
       category: "web/mobile"
     },
@@ -824,6 +825,23 @@ const Portfolio = () => {
                     </p>
 
                     <div className="flex flex-wrap gap-3 mb-8">
+                    {
+                      project.documents && project.documents.length > 0 && 
+                        project.documents.map((doc, docIndex) => {
+                          return (                        <a
+                          href={project.documents[0]}
+                          className="text-blue-600 hover:text-blue-800 transition-colors duration-300 font-medium"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          View Documentation
+                        </a>)
+                      }
+
+                      )
+                    
+                    }
+
                       {project.tech.map((tech, techIndex) => (
                         <span
                           key={techIndex}

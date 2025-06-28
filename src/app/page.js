@@ -271,6 +271,7 @@ const Portfolio = () => {
       description: "A Technology Blog",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["WordPress"],
+      github: ["#"],
       demo: "https://blog.vydeo.xyz/",
       category: "web/mobile"
     }
@@ -865,7 +866,7 @@ const Portfolio = () => {
                     </div>
 
                     <div className="flex gap-6">
-                      {project.github.map((githubLink, index) => (                      <a
+                      {project.github && project.github.length > 0 && project.github.map((githubLink, index) => (                      <a
                         href={githubLink}
                         className="group/link flex items-center gap-3 text-gray-600 hover:text-blue-600 transition-all duration-300 font-medium"
                       >

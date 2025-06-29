@@ -291,6 +291,9 @@ const Portfolio = () => {
     { name: "Node.js", category: "backend" },
     { name: "Nginx", category: "backend" },
     { name: "Netty", category: "backend" },
+    { name: "Flask", category: "backend" },
+    { name: "Fast API", category: "backend" },
+    { name: "Django", category: "backend" },
     { name: "RESTful APIs", category: "backend" },
     { name: "Microservices", category: "backend" },
 

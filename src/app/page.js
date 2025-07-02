@@ -280,12 +280,14 @@ const Portfolio = () => {
 
   const skills = [
     // Programming Languages
+    {name: "C#", category: "programming" },
     { name: "Java", category: "programming" },
     { name: "Python", category: "programming" },
     { name: "JavaScript", category: "programming" },
     { name: "Go", category: "programming" },
 
     // Backend
+    { name: ".Net", category: "backend" },
     { name: "Spring Boot", category: "backend" },
     { name: "Spring Cloud", category: "backend" },
     { name: "Node.js", category: "backend" },
@@ -306,6 +308,8 @@ const Portfolio = () => {
     { name: "Responsive Design", category: "frontend" },
 
     // Databases
+    { name: "Entity Framework", category: "database" },
+    { name: "ef core", category: "database" },
     { name: "MySQL", category: "database" },
     { name: "Oracle", category: "database" },
     { name: "PostgreSQL", category: "database" },
@@ -314,6 +318,7 @@ const Portfolio = () => {
     { name: "Cassandra", category: "database" },
 
     // Cloud & DevOps
+    { name: "Azure", category: "devops" },
     { name: "AWS", category: "devops" },
     { name: "GCP", category: "devops" },
     { name: "Docker", category: "devops" },

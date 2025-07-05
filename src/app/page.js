@@ -215,6 +215,16 @@ const Portfolio = () => {
   const projects = [
     {
       id: 1,
+      title: "AppointEase",
+      description: "A Platform for Booking Appointments",
+      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+      tech: ["C#", "ASP.NET", "Entity Core", "SQL Server", "Azure(APP Service, AI Search)", "Cloudflare", "Next.js", "Tailwind CSS" ,"GraphQL", "React Native"],
+      github: ["https://github.com/ipyton/appointments","https://github.com/ipyton/Appointment-System"],
+      demo: "https://appointments.czh1278341834.workers.dev/register",
+      category: "web/mobile"
+    },
+    {
+      id: 2,
       title: "Movie Enthusiasts' Community",
       description: "A Community let you watch movies and share ideas.",
       images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"],
@@ -224,8 +234,11 @@ const Portfolio = () => {
       demo: "https://vydeo.xyz",
       category: "web"
     },
+
+
+
     {
-      id: 2,
+      id: 3,
       title: "Dunder Debunk(password:$mallAmber19)",
       description: "React Native mobile app with real-time synchronization and offline support",
       images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
@@ -236,7 +249,7 @@ const Portfolio = () => {
       category: "ai"
     },
     {
-      id: 3,
+      id: 4,
       title: "Image Detection Service",
       description: "Modern chat interface with AI integration and real-time messaging",
       images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
@@ -246,7 +259,7 @@ const Portfolio = () => {
       category: "ai"
     },
     {
-      id: 4,
+      id: 5,
       title: "Portfolio Website",
       description: "Responsive portfolio website with modern animations and dark mode",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
@@ -254,16 +267,6 @@ const Portfolio = () => {
       github: ["https://github.com/ipyton/ipyton.github.io"],
       demo: "https://ipyton.github.io/",
       category: "web"
-    },
-    {
-      id: 5,
-      title: "AppointEase",
-      description: "A Platform for Booking Appointments",
-      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
-      tech: ["Next.js", "Tailwind CSS", "GraphQL", "React Native"],
-      github: ["https://github.com/ipyton/appointments","https://github.com/ipyton/Appointment-System"],
-      demo: "https://appointments.czh1278341834.workers.dev/register",
-      category: "web/mobile"
     },
     {
       id: 6,
@@ -663,7 +666,7 @@ const Portfolio = () => {
                 Passionate Developer & Creative Problem Solver
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                With over 3 years of experience in web development, I specialize in creating
+                With over 2 years of experience in web development, I specialize in creating
                 modern, responsive applications using the latest technologies. I love turning
                 complex problems into simple, beautiful solutions.
               </p>
@@ -674,7 +677,7 @@ const Portfolio = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">5</div>
+                  <div className="text-2xl font-bold text-blue-600">6</div>
                   <div className="text-gray-600">Projects Completed</div>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg">

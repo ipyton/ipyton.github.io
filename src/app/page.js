@@ -666,7 +666,7 @@ const Portfolio = () => {
                 Passionate Developer & Creative Problem Solver
               </h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                With over 2 years of experience in web development, I specialize in creating
+                With more than 3 years of experience in web development, I specialize in creating
                 modern, responsive applications using the latest technologies. I love turning
                 complex problems into simple, beautiful solutions.
               </p>
@@ -681,7 +681,7 @@ const Portfolio = () => {
                   <div className="text-gray-600">Projects Completed</div>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">2+</div>
+                  <div className="text-2xl font-bold text-purple-600">3+</div>
                   <div className="text-gray-600">Years Experience</div>
                 </div>
               </div>

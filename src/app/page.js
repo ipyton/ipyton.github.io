@@ -605,7 +605,7 @@ const Portfolio = () => {
             Hi, I'm <span className="bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text text-transparent">Noah</span>
           </h1>
           <p className="text-xl md:text-2xl mb-8 opacity-90">
-            Full Stack Developer & UI/UX Designer
+            Full Stack/Backend Developer & UI/UX Designer
           </p>
           <p className="text-lg md:text-xl font-medium mb-8 opacity-85 tracking-wide">
             <span className="inline-block mx-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">

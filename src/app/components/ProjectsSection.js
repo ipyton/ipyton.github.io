@@ -199,7 +199,7 @@ const ProjectsSection = () => {
                       <div className="p-2 rounded-full bg-gray-100 group-hover/link:bg-purple-100 group-hover/link:scale-110 transition-all duration-300">
                         <ExternalLink size={18} />
                       </div>
-                      <span className="group-hover/link:translate-x-1 transition-transform duration-300">Demo</span>
+                      <span className="group-hover/link:translate-x-1 transition-transform duration-300">Production</span>
                     </a>
                   </div>
                 </div>

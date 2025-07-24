@@ -10,7 +10,7 @@ const ProjectsSection = () => {
       id: 0,
       title: "Fetal weight calculator",
       description: "A weight tracking system for the pregnant women for Mercy Hospital For Women. ",
-      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+      images: ["/calculator0.png","/calculator1.png"],
       tech: ["Node.js", "Next.js", "PostgreSQL", "GCP Lambda", "GitHub Actions"],
       demo: "https://frogs.actionhq.dev/",
       category: "web",

@@ -20,7 +20,7 @@ const ProjectsSection = () => {
       id: 1,
       title: "AppointEase",
       description: "A Platform for Booking Appointments",
-      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+      images: ["/easePoint0.png","/easePoint1.png"],
       tech: ["C#", "ASP.NET", "Entity Core", "SQL Server", "Azure(APP Service, AI Search)", "Cloudflare", "Next.js", "Tailwind CSS" ,"GraphQL", "React Native"],
       github: ["https://github.com/ipyton/appointments","https://github.com/ipyton/Appointment-System"],
       demo: "https://appointments.czh1278341834.workers.dev/register",

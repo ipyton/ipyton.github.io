@@ -49,3 +49,80 @@
 .tech-tag:hover::after {
   left: 100%;
 }
+
+/* Flowing background animations */
+@keyframes flowGradient1 {
+  0% {
+    opacity: 0.1;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.1) translate(-5%, 5%);
+  }
+  100% {
+    opacity: 0.1;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes flowGradient2 {
+  0% {
+    opacity: 0.15;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.05) translate(5%, -5%);
+  }
+  100% {
+    opacity: 0.15;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes flowGradient3 {
+  0% {
+    opacity: 0.1;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.2;
+    transform: scale(1.08) translate(-7%, -3%);
+  }
+  100% {
+    opacity: 0.1;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes flowGradient4 {
+  0% {
+    opacity: 0.15;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.1) translate(3%, 7%);
+  }
+  100% {
+    opacity: 0.15;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+.flow-bg-1 {
+  animation: flowGradient1 10s ease-in-out infinite;
+}
+
+.flow-bg-2 {
+  animation: flowGradient2 15s ease-in-out infinite;
+}
+
+.flow-bg-3 {
+  animation: flowGradient3 12s ease-in-out infinite;
+}
+
+.flow-bg-4 {
+  animation: flowGradient4 18s ease-in-out infinite;
+}

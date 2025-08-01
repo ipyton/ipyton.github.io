@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, ZoomIn } from 'lucide-react';
 
 const ImageCarousel = ({ images, alt, color }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
-
+  
   useEffect(() => {
     if (!isAutoPlaying || images.length <= 1) return;
 
@@ -40,33 +40,29 @@ const ImageCarousel = ({ images, alt, color }) => {
 
   if (images.length === 1) {
     return (
-      <div className="relative w-full h-64 overflow-hidden">
-        <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-20`}></div>
+      <div className="relative w-full h-64 bg-black overflow-hidden">
         <img
           src={images[0]}
           alt={alt}
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+          className="w-full h-full object-contain transition-transform duration-700 hover:scale-105"
           onLoad={() => setImageLoaded(true)}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10 pointer-events-none"></div>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-64 overflow-hidden group">
-      {/* Background gradient */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-20`}></div>
-
+    <div className="relative w-full h-64 bg-black overflow-hidden group">
       {/* Main image */}
       <div className="relative w-full h-full">
         <img
           src={images[currentIndex]}
           alt={`${alt} - Image ${currentIndex + 1}`}
-          className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
+          className="w-full h-full object-contain transition-all duration-700 hover:scale-105"
           onLoad={() => setImageLoaded(true)}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/15"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/15 pointer-events-none"></div>
       </div>
 
       {/* Navigation arrows */}

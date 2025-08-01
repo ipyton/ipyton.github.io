@@ -23,15 +23,15 @@ const ProjectsSection = () => {
       images: ["/easePoint0.png","/easePoint1.png"],
       tech: ["C#", "ASP.NET", "Entity Core", "SQL Server", "Azure(APP Service, AI Search)", "Cloudflare", "Next.js", "Tailwind CSS" ,"GraphQL", "React Native"],
       github: ["https://github.com/ipyton/appointments","https://github.com/ipyton/Appointment-System"],
-      demo: "https://appointments.czh1278341834.workers.dev/register",
+      demo: "https://appointments.czh1278341834.workers.dev",
       category: "web/mobile",
       color: "from-blue-500 to-indigo-600"
     },
     {
       id: 2,
       title: "Movie Enthusiasts' Community",
-      description: "A Community let you watch movies and share ideas.",
-      images: ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop"],
+      description: "A Community let you watch movies and share ideas.(Under Maintenance, but you can still try)",
+      images: ["/vydeo1.png","/vydeo2.png","/vydeo3.png","/vydeo4.png"],
       tech: ["Python", "Flask", "Spring Boot", "Node.js", "React.js", "WebSocket", "Apache Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
         "FFmpeg", "MinIO", "Fluent Bit", "Prometheus", "Grafana", "Elasticsearch", "GitHub Actions"],
       github: ["https://github.com/ipyton/vydeos"],
@@ -41,8 +41,8 @@ const ProjectsSection = () => {
     },
     {
       id: 3,
-      title: "Dunder Debunk(password:$mallAmber19)",
-      description: "React Native mobile app with real-time synchronization and offline support",
+      title: "Dunder Debunk(password:$mallAmber19, Under Maintenance)",
+      description: "Leveraging AI to debunk the conspiracy theories",
       images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
       tech: ["React", "MySql", "Redux", "Oracle Cloud", "Gemini", "Flask"],
       documents: ["https://eportfolio.monash.edu/view/view.php?t=5b0e8302c18181971f0e"],
@@ -53,7 +53,7 @@ const ProjectsSection = () => {
     {
       id: 4,
       title: "Image Detection Service",
-      description: "Modern chat interface with AI integration and real-time messaging",
+      description: "Image detection service with AI integration",
       images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
       tech: ["React", "Python","DynamoDB", "API Gateway", "lambda","Cognito"],
       github: ["https://github.com/ipyton/picdetection/settings"],
@@ -72,17 +72,17 @@ const ProjectsSection = () => {
       category: "web",
       color: "from-amber-500 to-orange-600"
     },
-    {
-      id: 6,
-      title: "Blog Page",
-      description: "A Technology Blog",
-      images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
-      tech: ["WordPress"],
-      github: ["#"],
-      demo: "https://blog.vydeo.xyz/",
-      category: "web/mobile",
-      color: "from-violet-500 to-fuchsia-600"
-    }
+    // {
+    //   id: 6,
+    //   title: "Blog Page",
+    //   description: "A Technology Blog",
+    //   images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
+    //   tech: ["WordPress"],
+    //   github: ["#"],
+    //   demo: "https://blog.vydeo.xyz/",
+    //   category: "web/mobile",
+    //   color: "from-violet-500 to-fuchsia-600"
+    // }
   ];
 
   return (

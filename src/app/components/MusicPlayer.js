@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Disc, Music, VolumeX, Volume1, Volume2 } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -8,6 +9,7 @@ const MusicPlayer = () => {
   const [showMusicInfo, setShowMusicInfo] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const audioRef = useRef(null);
+  const { t } = useLanguage();
 
   // Song information
   const songInfo = {
@@ -72,7 +74,7 @@ const MusicPlayer = () => {
       {showNotification && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-6 py-3 rounded-full flex items-center gap-3 animate-fadeIn z-50">
           <Disc size={18} className="animate-spin" />
-          <span>Now playing: {songInfo.title} - {songInfo.artist}</span>
+          <span>{t('music.nowPlaying')} {songInfo.title} - {songInfo.artist}</span>
         </div>
       )}
       
@@ -126,17 +128,17 @@ const MusicPlayer = () => {
               setShowMusicInfo(false);
             }}
             className={`p-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 flex items-center justify-center ${isPlaying ? 'animate-pulse' : ''}`}
-            aria-label={isPlaying ? "Pause music" : "Play music"}
+            aria-label={isPlaying ? t('music.pauseMusic') : t('music.playMusic')}
           >
             {isPlaying ? (
               <>
                 <Disc size={24} className="animate-spin" />
-                <span className="sr-only">Pause Music</span>
+                <span className="sr-only">{t('music.pauseMusic')}</span>
               </>
             ) : (
               <>
                 <Music size={24} />
-                <span className="sr-only">Play Music</span>
+                <span className="sr-only">{t('music.playMusic')}</span>
               </>
             )}
             

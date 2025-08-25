@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const navBarStyles = {
   scrolled: 'bg-white/60 backdrop-blur-3xl backdrop-saturate-200 shadow-2xl border-b border-gray-200/60',
@@ -19,6 +21,7 @@ const navBarStyles = {
 const NavBar = ({ activeSection, setActiveSection }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { t, currentLanguage, changeLanguage } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,11 +57,11 @@ const NavBar = ({ activeSection, setActiveSection }) => {
   };
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' }
+    { name: t('nav.home'), href: '#home' },
+    { name: t('nav.about'), href: '#about' },
+    { name: t('nav.skills'), href: '#skills' },
+    { name: t('nav.projects'), href: '#projects' },
+    { name: t('nav.contact'), href: '#contact' }
   ];
 
   return (
@@ -76,10 +79,10 @@ const NavBar = ({ activeSection, setActiveSection }) => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
               <button
-                key={item.name}
+                key={item.href}
                 onClick={() => scrollToSection(item.href.slice(1))}
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 border-2 ${activeSection === item.href.slice(1)
                   ? isScrolled
@@ -93,18 +96,30 @@ const NavBar = ({ activeSection, setActiveSection }) => {
                 {item.name}
               </button>
             ))}
+            <LanguageSwitcher 
+              currentLanguage={currentLanguage}
+              onLanguageChange={changeLanguage}
+              isScrolled={isScrolled}
+            />
           </div>
 
           {/* Mobile menu button */}
-          <button
-            className={`md:hidden p-3 rounded-lg transition-all duration-300 ${isScrolled
-              ? 'text-gray-800 hover:bg-gray-100 border-2 border-gray-200'
-              : 'text-white hover:bg-white/25 backdrop-blur-sm border-2 border-white/30'
-              }`}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center space-x-2">
+            <LanguageSwitcher 
+              currentLanguage={currentLanguage}
+              onLanguageChange={changeLanguage}
+              isScrolled={isScrolled}
+            />
+            <button
+              className={`p-3 rounded-lg transition-all duration-300 border-2 ${isScrolled
+                ? 'text-gray-800 hover:bg-gray-100 border-2 border-gray-200'
+                : 'text-white hover:bg-white/25 backdrop-blur-sm border-2 border-white/30'
+                }`}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
@@ -114,7 +129,7 @@ const NavBar = ({ activeSection, setActiveSection }) => {
               <div className="px-6 py-4 space-y-3">
                 {navItems.map((item) => (
                   <button
-                    key={item.name}
+                    key={item.href}
                     onClick={() => {
                       scrollToSection(item.href.slice(1));
                       setIsMenuOpen(false);

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Github, ExternalLink } from 'lucide-react';
 import ImageCarousel from './ImageCarousel';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ProjectsSection = () => {
   const [hoveredProject, setHoveredProject] = useState(null);
+  const { t } = useLanguage();
 
   const projects = [
     {
@@ -99,13 +101,13 @@ const ProjectsSection = () => {
         <div className="text-center mb-20">
           <div className="inline-block">
             <h2 className="text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-6">
-              Featured Projects
+              {t('projects.title')}
             </h2>
             <div className="w-32 h-1.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mx-auto rounded-full"></div>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto mt-2 rounded-full"></div>
           </div>
           <p className="text-gray-600 text-lg mt-6 max-w-2xl mx-auto">
-            Discover some of my most exciting projects, crafted with passion and cutting-edge technology
+            {t('projects.subtitle')}
           </p>
         </div>
 

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Code, Server, Monitor, Database, Cloud, BarChart3, TestTube, Zap, Film, GitBranch } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const SkillsSection = () => {
   const [activeCategory, setActiveCategory] = useState('all');
+  const { t } = useLanguage();
 
   const skills = [
     // Programming Languages
@@ -121,10 +123,10 @@ const SkillsSection = () => {
     <section id="skills" className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">Skills & Technologies</h2>
+          <h2 className="text-5xl font-bold text-gray-900 mb-6">{t('skills.title')}</h2>
           <div className="w-24 h-2 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mb-8 rounded-full"></div>
           <p className="text-xl text-gray-700 max-w-2xl mx-auto font-medium">
-            A comprehensive toolkit spanning full-stack development, cloud infrastructure, and performance optimization
+            {t('skills.subtitle')}
           </p>
         </div>
 

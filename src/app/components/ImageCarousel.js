@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Play, Pause, ZoomIn } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ImageCarousel = ({ images, alt, color }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { t } = useLanguage();
   
   useEffect(() => {
     if (!isAutoPlaying || images.length <= 1) return;
@@ -69,7 +71,7 @@ const ImageCarousel = ({ images, alt, color }) => {
       <button
         onClick={prevImage}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/30 hover:scale-110 shadow-lg"
-        aria-label="Previous image"
+        aria-label={t('carousel.previousImage')}
       >
         <ChevronLeft size={20} />
       </button>
@@ -77,7 +79,7 @@ const ImageCarousel = ({ images, alt, color }) => {
       <button
         onClick={nextImage}
         className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/30 hover:scale-110 shadow-lg"
-        aria-label="Next image"
+        aria-label={t('carousel.nextImage')}
       >
         <ChevronRight size={20} />
       </button>
@@ -86,7 +88,7 @@ const ImageCarousel = ({ images, alt, color }) => {
       <button
         onClick={toggleAutoPlay}
         className="absolute top-4 left-4 bg-white/20 backdrop-blur-md text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white/30 hover:scale-110 shadow-lg"
-        aria-label={isAutoPlaying ? "Pause slideshow" : "Play slideshow"}
+        aria-label={isAutoPlaying ? t('carousel.pauseSlideshow') : t('carousel.playSlideshow')}
       >
         {isAutoPlaying ? <Pause size={16} /> : <Play size={16} />}
       </button>
@@ -101,7 +103,7 @@ const ImageCarousel = ({ images, alt, color }) => {
               ? 'bg-white scale-125 shadow-lg'
               : 'bg-white/50 hover:bg-white/75 hover:scale-110'
               }`}
-            aria-label={`Go to image ${index + 1}`}
+            aria-label={`${t('carousel.goToImage')} ${index + 1}`}
           >
             {index === currentIndex && (
               <div className="absolute inset-0 rounded-full bg-white animate-ping"></div>

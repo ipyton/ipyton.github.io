@@ -1,5 +1,6 @@
 // app/layout.js
 import '../styles/globals.css'
+import { LanguageProvider } from './contexts/LanguageContext'
 
 export const metadata = {
   title: 'Noah',
@@ -9,7 +10,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
+      </body>
     </html>
   );
 }

@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github, ExternalLink, Eye } from 'lucide-react';
 import ImageCarousel from './ImageCarousel';
+import ProjectDetailModal from './ProjectDetailModal';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const ProjectsSection = () => {
   const [hoveredProject, setHoveredProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { t } = useLanguage();
+
+  const handleViewDetails = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  };
 
   const projects = [
     {
       id: 0,
-      title: "Fetal weight calculator",
-      description: "A weight tracking system for the pregnant women for Mercy Hospital For Women. ",
       images: ["/calculator0.png","/calculator1.png"],
       tech: ["Node.js", "Next.js", "PostgreSQL", "GCP Lambda", "GitHub Actions"],
       demo: "https://frogs.actionhq.dev/",
@@ -20,8 +31,6 @@ const ProjectsSection = () => {
     },
     {
       id: 1,
-      title: "AppointEase",
-      description: "A Platform for Booking Appointments",
       images: ["/easePoint0.png","/easePoint1.png"],
       tech: ["C#", "ASP.NET", "Entity Core", "SQL Server", "Azure(APP Service, AI Search)", "Cloudflare", "Next.js", "Tailwind CSS" ,"GraphQL", "React Native"],
       github: ["https://github.com/ipyton/appointments","https://github.com/ipyton/Appointment-System"],
@@ -31,8 +40,6 @@ const ProjectsSection = () => {
     },
     {
       id: 2,
-      title: "Movie Enthusiasts' Community",
-      description: "A Community let you watch movies and share ideas.(Under Maintenance, but you can still try)",
       images: ["/vydeo1.png","/vydeo2.png","/vydeo3.png","/vydeo4.png"],
       tech: ["Python", "Flask", "Spring Boot", "Node.js", "React.js", "WebSocket", "Apache Kafka", "ScyllaDB", "Redis", "Nginx", "Aria2",
         "FFmpeg", "MinIO", "Fluent Bit", "Prometheus", "Grafana", "Elasticsearch", "GitHub Actions"],
@@ -43,8 +50,6 @@ const ProjectsSection = () => {
     },
     {
       id: 3,
-      title: "Dunder Debunk(password:$mallAmber19, Under Maintenance)",
-      description: "Leveraging AI to debunk the conspiracy theories",
       images: ["https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop"],
       tech: ["React", "MySql", "Redux", "Oracle Cloud", "Gemini", "Flask"],
       documents: ["https://eportfolio.monash.edu/view/view.php?t=5b0e8302c18181971f0e"],
@@ -54,8 +59,6 @@ const ProjectsSection = () => {
     },
     {
       id: 4,
-      title: "Image Detection Service",
-      description: "Image detection service with AI integration",
       images: ["https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop"],
       tech: ["React", "Python","DynamoDB", "API Gateway", "lambda","Cognito"],
       github: ["https://github.com/ipyton/picdetection/settings"],
@@ -65,8 +68,6 @@ const ProjectsSection = () => {
     },
     {
       id: 5,
-      title: "Portfolio Website",
-      description: "Responsive portfolio website with modern animations and dark mode",
       images: ["https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=300&fit=crop"],
       tech: ["Next.js", "Node.js", "Tailwind CSS", "Google Cloud Functions", ""],
       github: ["https://github.com/ipyton/ipyton.github.io"],
@@ -127,18 +128,18 @@ const ProjectsSection = () => {
               <div className="absolute inset-0.5 bg-white rounded-2xl"></div>
 
               <div className="relative">
-                <ImageCarousel images={project.images} alt={project.title} color={project.color} />
+                <ImageCarousel images={project.images} alt={t(`projects.items.${project.id}.title`)} color={project.color} />
 
                 <div className="p-8">
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-2xl font-bold text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                      {project.title}
+                      {t(`projects.items.${project.id}.title`)}
                     </h3>
                     <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${project.color} animate-pulse`}></div>
                   </div>
 
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    {project.description}
+                    {t(`projects.items.${project.id}.description`)}
                   </p>
 
                   <div className="flex flex-wrap gap-3 mb-8">
@@ -178,7 +179,18 @@ const ProjectsSection = () => {
                     ))
                   }
 
-                  <div className="flex gap-6">
+                  <div className="flex flex-wrap gap-4">
+                    {/* View Details Button */}
+                    <button
+                      onClick={() => handleViewDetails(project)}
+                      className="group/link flex items-center gap-3 text-gray-600 hover:text-green-600 transition-all duration-300 font-medium"
+                    >
+                      <div className="p-2 rounded-full bg-gray-100 group-hover/link:bg-green-100 group-hover/link:scale-110 transition-all duration-300">
+                        <Eye size={18} />
+                      </div>
+                      <span className="group-hover/link:translate-x-1 transition-transform duration-300">{t('projectDetails.viewDetails')}</span>
+                    </button>
+
                     {project.github && project.github.length > 0 && project.github.map((githubLink, index) => (
                       <a
                         key={index}
@@ -220,6 +232,13 @@ const ProjectsSection = () => {
           ))}
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        project={selectedProject}
+      />
     </section>
   );
 };

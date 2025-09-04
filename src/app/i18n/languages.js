@@ -35,7 +35,39 @@ export const languages = {
     },
     projects: {
       title: 'Featured Projects',
-      subtitle: 'Some of my recent work that showcases my skills and creativity'
+      subtitle: 'Some of my recent work that showcases my skills and creativity',
+      items: {
+        0: {
+          title: "Fetal weight calculator",
+          description: "A weight tracking system for the pregnant women for Mercy Hospital For Women.",
+          details: "This comprehensive fetal weight tracking system was developed specifically for Mercy Hospital For Women in Melbourne. The application provides healthcare professionals with accurate tools to monitor fetal development throughout pregnancy. Built with modern web technologies, it features real-time data visualization, secure patient records management, and intuitive user interfaces that streamline the workflow for medical staff. The system integrates with hospital databases and provides detailed analytics for better patient care and medical decision-making."
+        },
+        1: {
+          title: "AppointEase",
+          description: "A Platform for Booking Appointments",
+          details: "AppointEase is a comprehensive appointment booking platform designed to streamline scheduling for businesses and service providers. The platform features a dual-interface system with both web and mobile applications, allowing customers to book appointments seamlessly across devices. Key features include real-time availability checking, automated reminders, payment integration, and comprehensive admin dashboards. Built with C# and ASP.NET Core for the backend, React Native for mobile, and Next.js for the web frontend, it provides a scalable solution for appointment management with advanced features like AI-powered scheduling optimization and multi-language support."
+        },
+        2: {
+          title: "Movie Enthusiasts' Community",
+          description: "A Community let you watch movies and share ideas.(Under Maintenance, but you can still try)",
+          details: "Vydeo is a comprehensive movie streaming and community platform that combines entertainment with social interaction. Built with a microservices architecture, it features high-performance video streaming, real-time chat functionality, and community-driven content sharing. The platform utilizes advanced technologies including WebSocket for real-time communication, Apache Kafka for event streaming, ScyllaDB for high-performance data storage, and Redis for caching. The system includes automated video processing with FFmpeg, content delivery optimization, and comprehensive monitoring with Prometheus and Grafana. Currently under maintenance for performance improvements and new feature development."
+        },
+        3: {
+          title: "Dunder Debunk(password:$mallAmber19, Under Maintenance)",
+          description: "Leveraging AI to debunk the conspiracy theories",
+          details: "Dunder Debunk is an innovative AI-powered platform designed to analyze and debunk conspiracy theories using advanced natural language processing and machine learning algorithms. The application integrates Google's Gemini AI to provide fact-checking capabilities, source verification, and educational content about critical thinking. Built with React for the frontend and Flask for the backend, it features a comprehensive database of conspiracy theories, their origins, and evidence-based counterarguments. The platform includes user authentication, content moderation, and educational resources to promote media literacy and critical thinking skills. Currently under maintenance for AI model updates and security enhancements."
+        },
+        4: {
+          title: "Image Detection Service",
+          description: "Image detection service with AI integration",
+          details: "This advanced image detection service leverages AWS's machine learning capabilities to provide real-time image analysis and object recognition. Built with React for the user interface and Python for the backend processing, the service integrates with AWS services including Lambda for serverless computing, DynamoDB for data storage, API Gateway for secure API management, and Cognito for user authentication. The platform can detect and classify objects, faces, text, and scenes within uploaded images, providing detailed analysis results with confidence scores. It's designed for scalability and can handle high-volume image processing requests with automatic scaling based on demand."
+        },
+        5: {
+          title: "Portfolio Website",
+          description: "Responsive portfolio website with modern animations and dark mode",
+          details: "This portfolio website showcases modern web development practices with a focus on performance, accessibility, and user experience. Built with Next.js and Tailwind CSS, it features smooth animations, responsive design, and a sophisticated dark/light mode toggle. The site includes interactive elements like particle animations, smooth scrolling, and dynamic content loading. Integrated with Google Cloud Functions for serverless backend operations, it demonstrates full-stack development capabilities. The design emphasizes clean aesthetics, fast loading times, and cross-browser compatibility, serving as both a professional showcase and a demonstration of modern web development techniques."
+        }
+      }
     },
     contact: {
       title: 'Get In Touch',
@@ -66,6 +98,14 @@ export const languages = {
       pauseSlideshow: 'Pause slideshow',
       playSlideshow: 'Play slideshow',
       goToImage: 'Go to image'
+    },
+    projectDetails: {
+      viewDetails: 'View Details',
+      close: 'Close',
+      technologies: 'Technologies Used',
+      features: 'Key Features',
+      challenges: 'Technical Challenges',
+      solutions: 'Solutions Implemented'
     }
   },
   zh: {
@@ -104,7 +144,39 @@ export const languages = {
     },
     projects: {
       title: '精选项目',
-      subtitle: '展示我技能和创意的一些近期作品'
+      subtitle: '展示我技能和创意的一些近期作品',
+      items: {
+        0: {
+          title: "胎儿体重计算器",
+          description: "为墨尔本妇女医院孕妇设计的体重追踪系统。",
+          details: "这个全面的胎儿体重追踪系统专门为墨尔本妇女医院开发。该应用程序为医疗保健专业人员提供准确的工具来监测整个怀孕期间的胎儿发育。采用现代网络技术构建，具有实时数据可视化、安全的患者记录管理和直观的用户界面，简化了医务人员的工作流程。该系统与医院数据库集成，提供详细的分析，以改善患者护理和医疗决策。"
+        },
+        1: {
+          title: "AppointEase",
+          description: "预约预订平台",
+          details: "AppointEase是一个全面的预约预订平台，旨在简化企业和服务提供商的调度流程。该平台具有双界面系统，包括网页和移动应用程序，允许客户在不同设备上无缝预订预约。主要功能包括实时可用性检查、自动提醒、支付集成和全面的管理仪表板。使用C#和ASP.NET Core构建后端，React Native构建移动端，Next.js构建网页前端，为预约管理提供可扩展的解决方案，具有AI驱动的调度优化和多语言支持等高级功能。"
+        },
+        2: {
+          title: "电影爱好者社区",
+          description: "一个让您观看电影并分享想法的社区。（正在维护中，但您仍可以尝试）",
+          details: "Vydeo是一个综合的电影流媒体和社区平台，将娱乐与社交互动相结合。采用微服务架构构建，具有高性能视频流、实时聊天功能和社区驱动的内容分享。该平台利用先进技术，包括WebSocket用于实时通信、Apache Kafka用于事件流、ScyllaDB用于高性能数据存储、Redis用于缓存。系统包括使用FFmpeg的自动视频处理、内容交付优化，以及使用Prometheus和Grafana的全面监控。目前正在维护中，进行性能改进和新功能开发。"
+        },
+        3: {
+          title: "Dunder Debunk(密码:$mallAmber19, 正在维护)",
+          description: "利用AI来揭穿阴谋论",
+          details: "Dunder Debunk是一个创新的AI驱动平台，旨在使用先进的自然语言处理和机器学习算法来分析和揭穿阴谋论。该应用程序集成Google的Gemini AI，提供事实检查功能、来源验证和关于批判性思维的教育内容。使用React构建前端，Flask构建后端，具有全面的阴谋论数据库、其起源和基于证据的反驳。该平台包括用户认证、内容审核和教育资源，以促进媒体素养和批判性思维技能。目前正在维护中，进行AI模型更新和安全增强。"
+        },
+        4: {
+          title: "图像检测服务",
+          description: "集成AI的图像检测服务",
+          details: "这个先进的图像检测服务利用AWS的机器学习能力提供实时图像分析和对象识别。使用React构建用户界面，Python构建后端处理，该服务与AWS服务集成，包括Lambda用于无服务器计算、DynamoDB用于数据存储、API Gateway用于安全API管理、Cognito用于用户认证。该平台可以检测和分类上传图像中的对象、人脸、文本和场景，提供带有置信度分数的详细分析结果。它专为可扩展性而设计，可以根据需求自动扩展处理大量图像处理请求。"
+        },
+        5: {
+          title: "作品集网站",
+          description: "具有现代动画和深色模式的响应式作品集网站",
+          details: "这个作品集网站展示了现代网页开发实践，专注于性能、可访问性和用户体验。使用Next.js和Tailwind CSS构建，具有流畅的动画、响应式设计和复杂的深色/浅色模式切换。该网站包括交互式元素，如粒子动画、平滑滚动和动态内容加载。与Google Cloud Functions集成用于无服务器后端操作，展示了全栈开发能力。设计强调简洁美观、快速加载时间和跨浏览器兼容性，既作为专业展示，也作为现代网页开发技术的演示。"
+        }
+      }
     },
     contact: {
       title: '联系我',
@@ -135,6 +207,14 @@ export const languages = {
       pauseSlideshow: '暂停幻灯片',
       playSlideshow: '播放幻灯片',
       goToImage: '前往图片'
+    },
+    projectDetails: {
+      viewDetails: '查看详情',
+      close: '关闭',
+      technologies: '使用技术',
+      features: '主要功能',
+      challenges: '技术挑战',
+      solutions: '解决方案'
     }
   }
 };

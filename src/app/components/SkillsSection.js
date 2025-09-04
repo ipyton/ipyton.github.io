@@ -178,11 +178,11 @@ const SkillsSection = () => {
                       <p className="text-gray-600 font-medium">{categorySkills.length} technologies</p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                     {categorySkills.map((skill, index) => (
                       <div
                         key={index}
-                        className={`p-6 rounded-2xl bg-gradient-to-r ${category.color} text-white font-semibold text-center shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white/30`}
+                        className={`p-3 rounded-xl bg-gradient-to-r ${category.color} text-white font-medium text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border border-white/30 text-sm`}
                       >
                         {skill.name}
                       </div>
@@ -194,13 +194,13 @@ const SkillsSection = () => {
           </div>
         ) : (
           // Filtered view for specific category
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {filteredSkills.map((skill, index) => {
               const category = categories.find(cat => cat.id === skill.category);
               return (
                 <div
                   key={index}
-                  className={`p-6 rounded-2xl bg-gradient-to-r ${category?.color || 'from-gray-500 to-gray-600'} text-white font-semibold text-center shadow-xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white/60`}
+                  className={`p-3 rounded-xl bg-gradient-to-r ${category?.color || 'from-gray-500 to-gray-600'} text-white font-medium text-center shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 border border-white/60 text-sm`}
                 >
                   {skill.name}
                 </div>
